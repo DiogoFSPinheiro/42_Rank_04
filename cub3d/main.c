@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/05 12:11:43 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:31:14 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_up_win(t_mlx *win)
 	win->posy = 0;
 }
 
-void	ft_player(int px, int py, t_img *img, t_mlx *win)
+void	ft_draw_player(int px, int py, t_img *img, t_mlx *win)
 {
 	int	y;
 	int	x;
@@ -42,11 +42,16 @@ void	ft_player(int px, int py, t_img *img, t_mlx *win)
 		++y;
 	}
 }
+void	ft_draw_map(void)
+{
+	
+}
 
 int	draw(t_mlx *win)
 {
 	render_background(&win->img, 0x905af0);
-	ft_player(400, 150, &win->img, win);
+	ft_draw_map();
+	ft_draw_player(400, 150, &win->img, win);
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
 		win->img.mlx_img, 0, 0);
 	return (0);
