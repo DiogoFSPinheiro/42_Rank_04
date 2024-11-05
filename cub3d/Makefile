@@ -8,7 +8,7 @@ MINILXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11 -lbsd -no-pie -lm
 
 NAME = cub3d
 
-SRCS = main.c
+SRCS = main.c img_create.c events.c
 
 LIBFT = ./libraries/libft/libft.a
 PRINTF = ./libraries/printf/ft_printf.a

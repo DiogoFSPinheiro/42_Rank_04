@@ -6,35 +6,55 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/04 16:30:02 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:11:43 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_cleanup_and_exit(t_mlx *mlx)
+void	set_up_win(t_mlx *win)
 {
-	if (mlx->mlx_connect != NULL)
-	{
-		if (mlx->mlx_win != NULL)
-			mlx_destroy_window(mlx->mlx_connect, mlx->mlx_win);
-		mlx_destroy_display(mlx->mlx_connect);
-		free(mlx->mlx_connect);
-	}
-	free(mlx);
-	exit(0);
+	win->mlx_connect = 0;
+	win->mlx_win = 0;
+	win->map = 0;
+	win->posx = 0;
+	win->posy = 0;
 }
 
-int	ft_close(t_mlx *mlx)
+void	ft_player(int px, int py, t_img *img, t_mlx *win)
 {
-	ft_cleanup_and_exit(mlx);
+	int	y;
+	int	x;
+	int	size;
+
+	px += win->posx;
+	py += win->posy;
+	size = 25;
+	y = 0;
+	while (y < size && y + py < HEIGHT)
+	{
+		x = 0;
+		while (x < size && x + px < WIDTH)
+		{
+			my_pixel_put(img, x + px, y + py, 0xFFFF00);
+			x++;
+		}
+		++y;
+	}
+}
+
+int	draw(t_mlx *win)
+{
+	render_background(&win->img, 0x905af0);
+	ft_player(400, 150, &win->img, win);
+	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
+		win->img.mlx_img, 0, 0);
 	return (0);
 }
 
-void	render(int map)
+void	ft_read_map(int map)
 {
 	char	*line;
-	t_mlx	*win;
 
 	line = get_next_line(map);
 	while (line != NULL)
@@ -43,10 +63,27 @@ void	render(int map)
 		free(line);
 		line = get_next_line(map);
 	}
+}
+
+
+
+void	render(int map)
+{
+	t_mlx	*win;
+
+	//ft_read_map(map);
+	(void)map;
 	win = malloc(sizeof(t_mlx));
+	set_up_win(win);
 	win->mlx_connect = mlx_init();
-	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub");
-	mlx_hook(win->mlx_win, 17, 0, ft_close, win); // Set up a hook for closing events using ft_close function
+	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub3D");
+	win->img.mlx_img = mlx_new_image(win->mlx_connect, WIDTH, HEIGHT);
+	win->img.addr = mlx_get_data_addr(win->img.mlx_img, &win->img.bpp,
+			&win->img.line_len, &win->img.endian);
+	mlx_loop_hook(win->mlx_connect, &draw, win);
+	mlx_key_hook(win->mlx_win, arrow_keys, win);
+	mlx_hook(win->mlx_win, KeyPress, KeyPressMask, ft_event_checker, win);
+	mlx_hook(win->mlx_win, 17, 0, ft_close, win);
 	mlx_loop(win->mlx_connect);
 }
 
