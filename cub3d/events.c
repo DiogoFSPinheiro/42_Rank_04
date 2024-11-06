@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:32:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 17:53:10 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:01:35 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,15 @@ int	ft_event_checker(int Key, t_mlx *mlx)
 
 int	get_pixel_color(t_img *img, int x, int y)
 {
-    char *pixel;
+	char	*pixel;
 
-    // Ensure the coordinates are within the image bounds
-    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
-        return -1;  // Return an invalid color if out of bounds
-
-    pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
-    return *(int *)pixel;
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return (-1);
+	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	return (*(int *)pixel);
 }
 
-#define PLAYER_SIZE 20        // Player's size in pixels
-#define PLAYER_BUFFER_SIZE 1         // Buffer size to check around the player
-#define OBSTACLE_COLOR 0x000000 // Define black color for obstacles
+
 
 int	check_collision_x(t_mlx *mlx, int pos_x, int pos_y, int direction)
 {

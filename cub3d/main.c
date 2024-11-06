@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 16:57:28 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:01:03 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_draw_player(int px, int py, t_img *img, t_mlx *win)
 	py += win->posy;
 	win->player_x = px;
 	win->player_y = py;
-	size = 20;
+	size = PLAYER_SIZE;
 	y = 0;
 	while (y < size && y + py < HEIGHT)
 	{

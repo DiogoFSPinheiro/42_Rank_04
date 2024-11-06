@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 16:41:06 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:00:56 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@
 # define WIDTH 1920
 # define HEIGHT 980
 
-#define SQUARE_SIZE 50
+# define SQUARE_SIZE 50
 
-#define STEP_SIZE 5    // Step size for smooth movement within each tile
-#define BLACK_COLOR 0x000000  // Define black color for comparison
+# define STEP_SIZE 5
+
+# define PLAYER_SIZE 20
+# define PLAYER_BUFFER_SIZE 1
+# define OBSTACLE_COLOR 0x000000
 
 /*typedef struct s_point
 {
