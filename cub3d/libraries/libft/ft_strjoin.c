@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:47:54 by diogosan          #+#    #+#             */
-/*   Updated: 2024/08/20 14:09:38 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/06 11:50:09 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcat(str, s2, size + 1);
 	return (str);
 }
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*result;
+
+	result = ft_strjoin(s1, s2);
+	if (s1)
+		free(s1);
+	return (result);
+}
+

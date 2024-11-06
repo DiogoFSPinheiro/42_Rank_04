@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/05 13:26:04 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:41:06 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,34 @@
 # include <X11/keysym.h>
 # include <math.h>
 
-# define WIDTH 860
-# define HEIGHT 540
+# define WIDTH 1920
+# define HEIGHT 980
 
-typedef struct s_point
+#define SQUARE_SIZE 50
+
+#define STEP_SIZE 5    // Step size for smooth movement within each tile
+#define BLACK_COLOR 0x000000  // Define black color for comparison
+
+/*typedef struct s_point
 {
 	float				x;
 	float				y;
 	int					z;
 	int					color;
-}	t_point;
+}	t_point;*/
+
+typedef enum e_exit
+{
+	FAILURE,
+	SUCCESS,
+}	t_exit;
+
 
 typedef struct s_map
 {
 	int					width;
 	int					height;
-	t_point				**coord;
+	char				**coord;
 }	t_map;
 
 typedef struct s_img
@@ -54,6 +66,8 @@ typedef struct s_mlx
 	void	*mlx_win;
 	int		posx;
 	int		posy;
+	int		player_x;
+	int		player_y;
 	t_map	*map;
 	t_img	img;
 }	t_mlx;
