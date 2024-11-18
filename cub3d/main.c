@@ -6,11 +6,44 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 18:01:03 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:33:59 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	ft_mod(int n)
+{
+	if (n < 0)
+		n = -n;
+	return (n);
+}
+
+void	ft_bresenhams_alg(t_mlx *win, float px, float py)
+{
+	float	x_step;
+	float	y_step;
+	int		max;
+	int		end_x;
+    int		end_y;
+
+	end_x = px + 5 * win->player_delta_x;
+	end_y = py + 5 * win->player_delta_y;
+	x_step = end_x - px;
+	y_step = end_y - py;
+
+
+	max = fmax(ft_mod(x_step), ft_mod(y_step));
+	x_step /= max;
+	y_step /= max;
+
+	while ((int)(px - end_x) || (int)(py - end_y))
+	{
+		my_pixel_put(&win->img, px, py, 0x0000ff);
+		px += x_step;
+		py += y_step;
+	}
+}
 
 void	set_up_win(t_mlx *win, char **map)
 {
@@ -25,36 +58,13 @@ void	set_up_win(t_mlx *win, char **map)
 	win->map = malloc(sizeof(t_map));
 	win->map->height = 14;
 	win->map->width = 33;
-	win->player_x = 1315;
-	win->player_y = 565;
+	win->player_angle = 0;
+	win->player_delta_x = cos(win->player_angle) * 5;
+	win->player_delta_y = sin(win->player_angle) * 5;
 	win->map->coord = ft_calloc(14, sizeof(char *));
 	while (y < win->map->height)
 	{
 		win->map->coord[y] = ft_strdup(map[y]);
-		y++;
-	}
-}
-
-void	ft_draw_player(int px, int py, t_img *img, t_mlx *win)
-{
-	int	y;
-	int	x;
-	int	size;
-
-	px += win->posx;
-	py += win->posy;
-	win->player_x = px;
-	win->player_y = py;
-	size = PLAYER_SIZE;
-	y = 0;
-	while (y < size && y + py < HEIGHT)
-	{
-		x = 0;
-		while (x < size && x + px < WIDTH)
-		{
-			my_pixel_put(img, x + px, y + py, 0x0000FF);
-			x++;
-		}
 		y++;
 	}
 }
@@ -74,17 +84,19 @@ void	draw_square(t_img *img, int x, int y, int color)
 		j = 0;
 		while (j < SQUARE_SIZE)
 		{
-			my_pixel_put(img, start_x + j, start_y + i, color);
+			if (i > 0 && j > 0)
+				my_pixel_put(img, start_x + j, start_y + i, color);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	ft_draw_map(t_map *map, t_img *img)
+void	ft_draw_map(t_map *map, t_img *img, t_mlx *win)
 {
 	int	y;
 	int	x;
+	static int v;
 
 	y = 0;
 	while (y < map->height)
@@ -97,18 +109,50 @@ void	ft_draw_map(t_map *map, t_img *img)
 			else if (map->coord[y][x] == '0')
 				draw_square(img, x, y, 0xFFFFFF);
 			else if (map->coord[y][x] == 'N')
-				draw_square(img, x, y, 0xFF0000);
+			{
+				draw_square(img, x, y, 0xFFFFFF);
+				if (v == 0)
+				{
+					win->player_x = x * SQUARE_SIZE;
+					win->player_y = y * SQUARE_SIZE;
+					v++;
+				}
+			}
 			x++;
 		}
 		y++;
 	}
 }
 
+void	ft_update_player(int px, int py, t_img *img, t_mlx *win)
+{
+	float	y;
+	float	x;
+	int		size;
+
+	(void)win;
+	size = PLAYER_SIZE;
+	y = 0;
+	while (y < size && y + py < HEIGHT)
+	{
+		x = 0;
+		while (x < size && x + px < WIDTH)
+		{
+			if (x > 0 && y > 0)
+				my_pixel_put(img, x + px, y + py, 0x0000F0);
+			x++;
+		}
+		y++;
+	}
+}
+
+
 int	draw(t_mlx *win)
 {
-	render_background(&win->img, 0x905af0);
-	ft_draw_map(win->map, &win->img);
-	ft_draw_player(1315, 565, &win->img, win);
+	render_background(&win->img, 0xD3D3D3);
+	ft_draw_map(win->map, &win->img, win);
+	ft_update_player(win->player_x, win->player_y, &win->img, win);
+	ft_bresenhams_alg(win, win->player_x + (PLAYER_SIZE/2), win->player_y + (PLAYER_SIZE/2));
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
 		win->img.mlx_img, 0, 0);
 	return (0);
@@ -129,7 +173,6 @@ void	render(char **map)
 	win->img.addr = mlx_get_data_addr(win->img.mlx_img, &win->img.bpp,
 			&win->img.line_len, &win->img.endian);
 	mlx_loop_hook(win->mlx_connect, &draw, win);
-	//draw(win);
 	mlx_key_hook(win->mlx_win, arrow_keys, win);
 	mlx_hook(win->mlx_win, KeyPress, KeyPressMask, ft_event_checker, win);
 	mlx_hook(win->mlx_win, 17, 0, ft_close, win);

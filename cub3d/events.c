@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:32:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 18:01:35 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:24:13 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	check_collision_x(t_mlx *mlx, int pos_x, int pos_y, int direction)
 
 	if (direction == XK_Right)
 	{
-		x = pos_x + PLAYER_SIZE;
+		x = pos_x + PLAYER_SIZE + 1;
 		y = pos_y;
 		while (y < pos_y + PLAYER_SIZE)
 		{
@@ -114,7 +114,7 @@ int	check_collision_y(t_mlx *mlx, int pos_x, int pos_y, int direction)
 	else if (direction == XK_Down)
 	{
 		x = pos_x;
-		y = pos_y + PLAYER_SIZE;
+		y = pos_y + PLAYER_SIZE + 1;
 		while (x < pos_x + PLAYER_SIZE)
 		{
 			if (get_pixel_color(&mlx->img, x++, y) == OBSTACLE_COLOR)
@@ -126,25 +126,38 @@ int	check_collision_y(t_mlx *mlx, int pos_x, int pos_y, int direction)
 
 int	arrow_keys(int Key, t_mlx *mlx)
 {
-	if (Key == XK_Right)
-	{
-		if (check_collision_x(mlx, mlx->player_x, mlx->player_y, XK_Right) == SUCCESS)
-			mlx->posx += 5;
-	}
 	if (Key == XK_Left)
 	{
-		if (check_collision_x(mlx, mlx->player_x, mlx->player_y, XK_Left) == SUCCESS)
-			mlx->posx -= 5;
+		mlx->player_angle -= 0.1;
+		if (mlx->player_angle < 0)
+		{
+			mlx->player_angle += 2 * PI;
+		}
+		mlx->player_delta_x = cos(mlx->player_angle) * 5;
+		mlx->player_delta_y = sin(mlx->player_angle) * 5;
 	}
+
+	if (Key == XK_Right)
+	{
+		mlx->player_angle += 0.1;
+		if (mlx->player_angle > 2 * PI)
+		{
+			mlx->player_angle -= 2 * PI;
+		}
+		mlx->player_delta_x = cos(mlx->player_angle) * 5;
+		mlx->player_delta_y = sin(mlx->player_angle) * 5;
+	}
+
 	if (Key == XK_Up)
 	{
-		if (check_collision_y(mlx, mlx->player_x, mlx->player_y, XK_Up) == SUCCESS)
-			mlx->posy -= 5;
+		mlx->player_x += mlx->player_delta_x;
+		mlx->player_y += mlx->player_delta_y;
 	}
+
 	if (Key == XK_Down)
 	{
-		if (check_collision_y(mlx, mlx->player_x, mlx->player_y, XK_Down) == SUCCESS)
-			mlx->posy += 5;
+		mlx->player_x -= mlx->player_delta_x;
+		mlx->player_y -= mlx->player_delta_y;
 	}
 	if (Key == XK_x)
 		ft_println("y: %i  ,  x: %i ", mlx->player_y, mlx->player_x);

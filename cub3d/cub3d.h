@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/06 18:00:56 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:53:01 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <X11/keysym.h>
 # include <math.h>
 
+# define PI 3.14159265359
 # define WIDTH 1920
 # define HEIGHT 980
 
@@ -69,8 +70,11 @@ typedef struct s_mlx
 	void	*mlx_win;
 	int		posx;
 	int		posy;
-	int		player_x;
-	int		player_y;
+	float	player_x;
+	float	player_y;
+	float	player_delta_x;
+	float	player_delta_y;
+	float	player_angle;
 	t_map	*map;
 	t_img	img;
 }	t_mlx;
