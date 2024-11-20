@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:32:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/18 18:24:13 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:43:52 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	ft_cleanup_and_exit(t_mlx *mlx)
 	}
 	if (mlx->map != NULL)
 		free_map(mlx->map);
+	if (mlx->player != NULL)
+		free(mlx->player);
 	free(mlx);
 	exit(0);
 }
@@ -128,39 +130,40 @@ int	arrow_keys(int Key, t_mlx *mlx)
 {
 	if (Key == XK_Left)
 	{
-		mlx->player_angle -= 0.1;
-		if (mlx->player_angle < 0)
+		mlx->player->player_angle -= 0.1;
+		if (mlx->player->player_angle < 0)
 		{
-			mlx->player_angle += 2 * PI;
+			mlx->player->player_angle += 2 * PI;
 		}
-		mlx->player_delta_x = cos(mlx->player_angle) * 5;
-		mlx->player_delta_y = sin(mlx->player_angle) * 5;
+		mlx->player->player_delta_x = cos(mlx->player->player_angle) * 5;
+		mlx->player->player_delta_y = sin(mlx->player->player_angle) * 5;
 	}
 
 	if (Key == XK_Right)
 	{
-		mlx->player_angle += 0.1;
-		if (mlx->player_angle > 2 * PI)
+		mlx->player->player_angle += 0.1;
+		if (mlx->player->player_angle > 2 * PI)
 		{
-			mlx->player_angle -= 2 * PI;
+			mlx->player->player_angle -= 2 * PI;
 		}
-		mlx->player_delta_x = cos(mlx->player_angle) * 5;
-		mlx->player_delta_y = sin(mlx->player_angle) * 5;
+		mlx->player->player_delta_x = cos(mlx->player->player_angle) * 5;
+		mlx->player->player_delta_y = sin(mlx->player->player_angle) * 5;
 	}
 
 	if (Key == XK_Up)
 	{
-		mlx->player_x += mlx->player_delta_x;
-		mlx->player_y += mlx->player_delta_y;
+		mlx->player->player_x += mlx->player->player_delta_x;
+		mlx->player->player_y += mlx->player->player_delta_y;
 	}
 
 	if (Key == XK_Down)
 	{
-		mlx->player_x -= mlx->player_delta_x;
-		mlx->player_y -= mlx->player_delta_y;
+		mlx->player->player_x -= mlx->player->player_delta_x;
+		mlx->player->player_y -= mlx->player->player_delta_y;
 	}
 	if (Key == XK_x)
-		ft_println("y: %i  ,  x: %i ", mlx->player_y, mlx->player_x);
+		ft_println("y: %i  ,  x: %i ",
+			mlx->player->player_y, mlx->player->player_x);
 	if (Key == XK_z)
 		;
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/18 13:53:01 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:20:57 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define WIDTH 1920
 # define HEIGHT 980
 
-# define SQUARE_SIZE 50
+# define SQUARE_SIZE 64
 
 # define STEP_SIZE 5
 
@@ -33,13 +33,6 @@
 # define PLAYER_BUFFER_SIZE 1
 # define OBSTACLE_COLOR 0x000000
 
-/*typedef struct s_point
-{
-	float				x;
-	float				y;
-	int					z;
-	int					color;
-}	t_point;*/
 
 typedef enum e_exit
 {
@@ -64,19 +57,22 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-typedef struct s_mlx
+typedef struct s_player
 {
-	void	*mlx_connect;
-	void	*mlx_win;
-	int		posx;
-	int		posy;
 	float	player_x;
 	float	player_y;
 	float	player_delta_x;
 	float	player_delta_y;
 	float	player_angle;
-	t_map	*map;
-	t_img	img;
+}	t_player;
+
+typedef struct s_mlx
+{
+	void		*mlx_connect;
+	void		*mlx_win;
+	t_player	*player;
+	t_map		*map;
+	t_img		img;
 }	t_mlx;
 
 // --------------- main.c ------------------------- //
@@ -94,5 +90,16 @@ void	ft_cleanup_and_exit(t_mlx *mlx);
 int		ft_close(t_mlx *mlx);
 int		ft_event_checker(int Key, t_mlx *mlx);
 int		arrow_keys(int Key, t_mlx *mlx);
+
+// --------------- draw_shapes.c ---------------- //
+
+void	ft_update_player(int px, int py, t_img *img, t_mlx *win);
+void	ft_draw_map(t_map *map, t_img *img, t_mlx *win);
+void	draw_square(t_img *img, int x, int y, int color);
+
+// --------------- utils.c --------------------- //
+
+int		ft_mod(int n);
+void	set_up_win(t_mlx *win, char **map);
 
 #endif

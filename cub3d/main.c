@@ -6,29 +6,49 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/18 16:33:59 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:01:41 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_mod(int n)
-{
-	if (n < 0)
-		n = -n;
-	return (n);
-}
-
-void	ft_bresenhams_alg(t_mlx *win, float px, float py)
+void	ft_vision_angle(t_mlx *win, float px, float py)
 {
 	float	x_step;
 	float	y_step;
 	int		max;
 	int		end_x;
-    int		end_y;
+	int		end_y;
 
-	end_x = px + 5 * win->player_delta_x;
-	end_y = py + 5 * win->player_delta_y;
+	end_x = px + 5 * win->player->player_delta_x;
+	end_y = py + 5 * win->player->player_delta_y;
+	x_step = end_x - px;
+	y_step = end_y - py;
+
+
+	max = fmax(ft_mod(x_step), ft_mod(y_step));
+	x_step /= max;
+	y_step /= max;
+
+	while ((int)(px - end_x) || (int)(py - end_y))
+	{
+		my_pixel_put(&win->img, px, py, 0xff00ff);
+		px += x_step;
+		py += y_step;
+	}
+}
+
+
+void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y)
+{
+	float	x_step;
+	float	y_step;
+	float	px;
+	float	py;
+	int		max;
+
+	px = win->player->player_x;
+	py = win->player->player_y;
 	x_step = end_x - px;
 	y_step = end_y - py;
 
@@ -44,115 +64,133 @@ void	ft_bresenhams_alg(t_mlx *win, float px, float py)
 		py += y_step;
 	}
 }
-
-void	set_up_win(t_mlx *win, char **map)
+/*
+void	raycaster(t_mlx *win)
 {
-	int	y;
+	int	r = 0, mx, my, mp, dof;
+	float rx, ry, ra, xo, yo;
+	float aTan;
 
-	y = 0;
-	win->mlx_connect = 0;
-	win->mlx_win = 0;
-	win->map = 0;
-	win->posx = 0;
-	win->posy = 0;
-	win->map = malloc(sizeof(t_map));
-	win->map->height = 14;
-	win->map->width = 33;
-	win->player_angle = 0;
-	win->player_delta_x = cos(win->player_angle) * 5;
-	win->player_delta_y = sin(win->player_angle) * 5;
-	win->map->coord = ft_calloc(14, sizeof(char *));
-	while (y < win->map->height)
+	ra = win->player->player_angle;
+	while (r++ < 1)
 	{
-		win->map->coord[y] = ft_strdup(map[y]);
-		y++;
-	}
-}
-
-void	draw_square(t_img *img, int x, int y, int color)
-{
-	int	start_x;
-	int	start_y;
-	int	i;
-	int	j;
-
-	start_x = x * SQUARE_SIZE;
-	start_y = y * SQUARE_SIZE;
-	i = 0;
-	while (i < SQUARE_SIZE)
-	{
-		j = 0;
-		while (j < SQUARE_SIZE)
+		dof = 0;
+		aTan = -1 / tan(ra);
+		if (ra > PI)
 		{
-			if (i > 0 && j > 0)
-				my_pixel_put(img, start_x + j, start_y + i, color);
-			j++;
+			ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
+			rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+			yo = -SQUARE_SIZE;
+			xo = -yo * aTan;
 		}
-		i++;
-	}
-}
-
-void	ft_draw_map(t_map *map, t_img *img, t_mlx *win)
-{
-	int	y;
-	int	x;
-	static int v;
-
-	y = 0;
-	while (y < map->height)
-	{
-		x = 0;
-		while (x < map->width && map->coord[y][x] != '\0')
+		if (ra < PI)
 		{
-			if (map->coord[y][x] == '1')
-				draw_square(img, x, y, 0x000000);
-			else if (map->coord[y][x] == '0')
-				draw_square(img, x, y, 0xFFFFFF);
-			else if (map->coord[y][x] == 'N')
+			ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
+			rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+			yo = SQUARE_SIZE;
+			xo = -yo * aTan;
+		}
+		if (ra == 0 || ra == PI)
+		{
+			rx = win->player->player_x;
+			ry = win->player->player_y;
+			dof = 8;
+		}
+		while (dof < 8)
+		{
+			mx = (int)rx / SQUARE_SIZE;
+			my = (int)ry / SQUARE_SIZE;
+			mp = my * win->map->width + mx;
+			printf("mp: %i\n", mp);
+			if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+				break ;
+			if (mp < win->map->width * win->map->height && win->map->coord[my][mx] == '1')
+				dof = 8;
+			else
 			{
-				draw_square(img, x, y, 0xFFFFFF);
-				if (v == 0)
-				{
-					win->player_x = x * SQUARE_SIZE;
-					win->player_y = y * SQUARE_SIZE;
-					v++;
-				}
+				rx += xo;
+				ry += yo;
+				dof++;
 			}
-			x++;
 		}
-		y++;
-	}
-}
+		if (rx >= 0 && rx < win->map->width * SQUARE_SIZE && ry >= 0 && ry < win->map->height * SQUARE_SIZE)
+			ft_bresenhams_alg(win, rx, ry);
 
-void	ft_update_player(int px, int py, t_img *img, t_mlx *win)
+	}
+}*/
+
+void raycaster(t_mlx *win)
 {
-	float	y;
-	float	x;
-	int		size;
+    int r = 0, mx, my, mp, dof;
+    float rx, ry, ra, xo, yo;
+    float aTan;
 
-	(void)win;
-	size = PLAYER_SIZE;
-	y = 0;
-	while (y < size && y + py < HEIGHT)
-	{
-		x = 0;
-		while (x < size && x + px < WIDTH)
-		{
-			if (x > 0 && y > 0)
-				my_pixel_put(img, x + px, y + py, 0x0000F0);
-			x++;
-		}
-		y++;
-	}
+    ra = win->player->player_angle;
+    while (r++ < 1)
+    {
+        dof = 0;
+        aTan = -1 / tan(ra);
+
+        if (ra > PI)
+        {
+            ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
+            rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+            yo = -SQUARE_SIZE;
+            xo = -yo * aTan;
+        }
+        else if (ra < PI)
+        {
+            ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
+            rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+            yo = SQUARE_SIZE;
+            xo = -yo * aTan;
+        }
+        else if (ra == 0 || ra == PI)
+        {
+            rx = win->player->player_x;
+            ry = win->player->player_y;
+            dof = 8;
+        }
+
+        while (dof < 8)
+        {
+            mx = (int)rx / SQUARE_SIZE;
+            my = (int)ry / SQUARE_SIZE;
+            mp = my * win->map->width + mx;
+            printf("mp: %i\n", mp);
+
+            // Check if the ray is out of bounds
+            if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+                break;
+
+            // Check if the ray hits a wall
+            if (mp < win->map->width * win->map->height && win->map->coord[my][mx] == '1')
+                break;
+            else
+            {
+                rx += xo;
+                ry += yo;
+                dof++;
+            }
+        }
+
+        // Ensure rx and ry are within map boundaries before calling ft_bresenhams_alg
+        if (rx < 0) rx = 0;
+        if (rx >= win->map->width * SQUARE_SIZE) rx = win->map->width * SQUARE_SIZE - 1;
+        if (ry < 0) ry = 0;
+        if (ry >= win->map->height * SQUARE_SIZE) ry = win->map->height * SQUARE_SIZE - 1;
+
+        ft_bresenhams_alg(win, rx, ry);
+    }
 }
-
 
 int	draw(t_mlx *win)
 {
 	render_background(&win->img, 0xD3D3D3);
 	ft_draw_map(win->map, &win->img, win);
-	ft_update_player(win->player_x, win->player_y, &win->img, win);
-	ft_bresenhams_alg(win, win->player_x + (PLAYER_SIZE/2), win->player_y + (PLAYER_SIZE/2));
+	ft_update_player(win->player->player_x, win->player->player_y, &win->img, win);
+	ft_vision_angle(win, win->player->player_x, win->player->player_y);
+	raycaster(win);
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
 		win->img.mlx_img, 0, 0);
 	return (0);
@@ -162,11 +200,10 @@ void	render(char **map)
 {
 	t_mlx	*win;
 
-	(void)map;
+
 	win = malloc(sizeof(t_mlx));
+	//printf("aqui\n\n\n\n\n");
 	set_up_win(win, map);
-
-
 	win->mlx_connect = mlx_init();
 	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub3D");
 	win->img.mlx_img = mlx_new_image(win->mlx_connect, WIDTH, HEIGHT);
@@ -183,20 +220,18 @@ int	main(void)
 {
 	char	*data[] =
 	{
-	"        1111111111111111111111111",
-	"        1000000000110000000000001",
-	"        1011000001110000000000001",
-	"        1001000000000000000000001",
-	"111111111011000001110000000000001",
-	"100000000011000001110111101111111",
-	"11110111111111011100000010001",
-	"11110111111111011101010010001",
-	"11000000110101011100000010001",
-	"10000000000000001100000010001",
-	"10000000000000001101010010001",
-	"11000001110101011101011010N0111",
-	"11110111 1110101 101111010001",
-	"11111111 1111111 111111111111"};
+	"111111111111111111",
+	"100000N00011000001",
+	"111100111111110111",
+	"111100011111110111",
+	"110000001101010111",
+	"100000000000000011",
+	"100000000000000011",
+	"110000011101010111",
+	"111101111111010111",
+	"111111111111111111"};
+
+	//8:49
 
 	render(data);
 	return (0);
