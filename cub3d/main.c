@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 19:01:41 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:37:57 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,21 +151,19 @@ void raycaster(t_mlx *win)
             ry = win->player->player_y;
             dof = 8;
         }
-
         while (dof < 8)
         {
             mx = (int)rx / SQUARE_SIZE;
             my = (int)ry / SQUARE_SIZE;
             mp = my * win->map->width + mx;
-            printf("mp: %i\n", mp);
-
+			(void)mp;
             // Check if the ray is out of bounds
             if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
-                break;
+				break ;
 
             // Check if the ray hits a wall
-            if (mp < win->map->width * win->map->height && win->map->coord[my][mx] == '1')
-                break;
+            if (mx < win->map->width && my < win->map->height && win->map->coord[my][mx] == '1')
+				dof = 8;
             else
             {
                 rx += xo;
@@ -173,13 +171,15 @@ void raycaster(t_mlx *win)
                 dof++;
             }
         }
-
         // Ensure rx and ry are within map boundaries before calling ft_bresenhams_alg
-        if (rx < 0) rx = 0;
-        if (rx >= win->map->width * SQUARE_SIZE) rx = win->map->width * SQUARE_SIZE - 1;
-        if (ry < 0) ry = 0;
-        if (ry >= win->map->height * SQUARE_SIZE) ry = win->map->height * SQUARE_SIZE - 1;
-
+        if (rx < 0)
+			rx = 0;
+        if (rx >= win->map->width * SQUARE_SIZE)
+			rx = win->map->width * SQUARE_SIZE - 1;
+        if (ry < 0)
+			ry = 0;
+        if (ry >= win->map->height * SQUARE_SIZE)
+			ry = win->map->height * SQUARE_SIZE - 1;
         ft_bresenhams_alg(win, rx, ry);
     }
 }

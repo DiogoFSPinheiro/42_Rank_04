@@ -164,8 +164,6 @@ int	arrow_keys(int Key, t_mlx *mlx)
 	if (Key == XK_x)
 		ft_println("y: %i  ,  x: %i ",
 			mlx->player->player_y, mlx->player->player_x);
-	if (Key == XK_z)
-		;
 	return (0);
 }
 
