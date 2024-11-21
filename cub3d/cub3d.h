@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/21 15:55:24 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:39:54 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,27 @@ typedef enum e_exit
 	SUCCESS,
 }	t_exit;
 
+//--------- calculations -------
+typedef struct s_intersection_vars
+{
+	float rx;
+	float ry;
+	float xo;
+	float yo;
+}	t_intersection_vars;
+
+typedef struct s_ray_vars
+{
+    float rx;
+    float ry;
+    float hx;
+    float hy;
+    float vx;
+    float vy;
+    float line_h;
+    float line_v;
+}	t_ray_vars;
+//--------- ------------ -------
 
 typedef struct s_map
 {
@@ -80,6 +101,7 @@ typedef struct s_mlx
 // --------------- main.c ------------------------- //
 
 int		main(void);
+void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y, int color);
 
 // --------------- img_create.c ------------------ //
 
@@ -103,5 +125,12 @@ void	draw_square(t_img *img, int x, int y, int color);
 
 int		ft_mod(int n);
 void	set_up_win(t_mlx *win, char **map);
+float	line_length(float x1, float y1, float x2, float y2);
+
+// --------------- raycast.c --------------------- //
+
+void	raycaster(t_mlx *win);
+void	get_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy);
+void	get_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 17:23:05 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:39:44 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ int	ft_mod(int n)
 	if (n < 0)
 		n = -n;
 	return (n);
+}
+
+float	line_length(float x1, float y1, float x2, float y2)
+{
+	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
 }
 
 void	set_up_win(t_mlx *win, char **map)
