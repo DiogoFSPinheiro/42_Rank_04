@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 18:20:57 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:55:24 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <math.h>
 
 # define PI 3.14159265359
+# define P2 PI/2
+# define P3 3*PI/2
 # define WIDTH 1920
 # define HEIGHT 980
 

@@ -6,11 +6,12 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 21:37:57 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:13:00 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 void	ft_vision_angle(t_mlx *win, float px, float py)
 {
@@ -39,7 +40,7 @@ void	ft_vision_angle(t_mlx *win, float px, float py)
 }
 
 
-void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y)
+void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y, int color)
 {
 	float	x_step;
 	float	y_step;
@@ -59,130 +60,165 @@ void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y)
 
 	while ((int)(px - end_x) || (int)(py - end_y))
 	{
-		my_pixel_put(&win->img, px, py, 0x0000ff);
+		my_pixel_put(&win->img, px, py, color);
 		px += x_step;
 		py += y_step;
 	}
 }
-/*
-void	raycaster(t_mlx *win)
+
+float	line_length(float x1, float y1, float x2, float y2)
 {
-	int	r = 0, mx, my, mp, dof;
-	float rx, ry, ra, xo, yo;
-	float aTan;
+	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+}
 
-	ra = win->player->player_angle;
-	while (r++ < 1)
+/**
+ * raycaster - Casts rays to determine intersections with the map.
+ *
+ * Variables used:
+ * - @r: Number of rays to cast.
+ * - @mx: Map index on the x-axis (integer grid coordinate).
+ * - @my: Map index on the y-axis (integer grid coordinate).
+ * - @dof: Depth of field (maximum number of steps to check for collisions).
+ * - @rx: X-coordinate of the ray endpoint on the rendered map.
+ * - @ry: Y-coordinate of the ray endpoint on the rendered map.
+ * - @ra: Ray angle (starts as the player's angle, varies per ray).
+ * - @xo: X-offset for stepping to the next grid cell.
+ * - @yo: Y-offset for stepping to the next grid cell.
+ * - @atan:(aTan) Inverse of tangent (used for ray_h direction).
+ * - @ntan:(nTan) Negative tangent (used for ray_h direction).
+ *
+ * This function iterates through rays, calculates their angles and intersections
+ * with the map, and determines whether they hit a wall. The results are used for
+ * rendering or other purposes.
+ */
+
+void get_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
+{
+	int mx, my, dof = 0;
+	float rx, ry, xo, yo, aTan;
+
+	aTan = -1 / tan(ra);
+
+	if (ra > PI)
 	{
-		dof = 0;
-		aTan = -1 / tan(ra);
-		if (ra > PI)
-		{
-			ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
-			rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-			yo = -SQUARE_SIZE;
-			xo = -yo * aTan;
-		}
-		if (ra < PI)
-		{
-			ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
-			rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-			yo = SQUARE_SIZE;
-			xo = -yo * aTan;
-		}
-		if (ra == 0 || ra == PI)
-		{
-			rx = win->player->player_x;
-			ry = win->player->player_y;
-			dof = 8;
-		}
-		while (dof < 8)
-		{
-			mx = (int)rx / SQUARE_SIZE;
-			my = (int)ry / SQUARE_SIZE;
-			mp = my * win->map->width + mx;
-			printf("mp: %i\n", mp);
-			if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
-				break ;
-			if (mp < win->map->width * win->map->height && win->map->coord[my][mx] == '1')
-				dof = 8;
-			else
-			{
-				rx += xo;
-				ry += yo;
-				dof++;
-			}
-		}
-		if (rx >= 0 && rx < win->map->width * SQUARE_SIZE && ry >= 0 && ry < win->map->height * SQUARE_SIZE)
-			ft_bresenhams_alg(win, rx, ry);
-
+		ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
+		rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+		yo = -SQUARE_SIZE;
+		xo = -yo * aTan;
 	}
-}*/
+	else if (ra < PI)
+	{
+		ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
+		rx = (win->player->player_y - ry) * aTan + win->player->player_x;
+		yo = SQUARE_SIZE;
+		xo = -yo * aTan;
+	}
+	else if (ra == 0 || ra == PI)
+	{
+		rx = win->player->player_x;
+		ry = win->player->player_y;
+		dof = 20;
+	}
+
+	while (dof < 20)
+	{
+		mx = (int)(rx / SQUARE_SIZE);
+		my = (int)(ry / SQUARE_SIZE);
+
+		if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+			break ;
+
+		if (win->map->coord[my][mx] == '1')
+			break ;
+		else
+		{
+			rx += xo;
+			ry += yo;
+			dof++;
+		}
+	}
+	*hx = fmax(0, fmin(rx, win->map->width * SQUARE_SIZE - 1));
+	*hy = fmax(0, fmin(ry, win->map->height * SQUARE_SIZE - 1));
+}
+
+void get_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
+{
+	int mx, my, dof = 0;
+	float rx, ry, xo, yo, nTan;
+
+	nTan = -tan(ra);
+
+	if (ra > P2 && ra < P3)
+	{
+		rx = (((int)win->player->player_x / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
+		ry = (win->player->player_x - rx) * nTan + win->player->player_y;
+		xo = -SQUARE_SIZE;
+		yo = -xo * nTan;
+	}
+	else if (ra < P2 || ra > P3)
+	{
+		rx = (((int)win->player->player_x / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
+		ry = (win->player->player_x - rx) * nTan + win->player->player_y;
+		xo = SQUARE_SIZE;
+		yo = -xo * nTan;
+	}
+	else if (ra == 0 || ra == PI)
+	{
+		rx = win->player->player_x;
+		ry = win->player->player_y;
+		dof = 20;
+	}
+
+	while (dof < 20)
+	{
+		mx = (int)(rx / SQUARE_SIZE);
+		my = (int)(ry / SQUARE_SIZE);
+
+		if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+			break ;
+
+		if (win->map->coord[my][mx] == '1')
+			break ;
+		else
+		{
+			rx += xo;
+			ry += yo;
+			dof++;
+		}
+	}
+	*vx = fmax(0, fmin(rx, win->map->width * SQUARE_SIZE - 1));
+	*vy = fmax(0, fmin(ry, win->map->height * SQUARE_SIZE - 1));
+}
 
 void raycaster(t_mlx *win)
 {
-    int r = 0, mx, my, mp, dof;
-    float rx, ry, ra, xo, yo;
-    float aTan;
+	int r = 0;
+	float rx, ry, hx, hy, vx, vy, line_h, line_v;
+	float ra = win->player->player_angle;
 
-    ra = win->player->player_angle;
-    while (r++ < 1)
-    {
-        dof = 0;
-        aTan = -1 / tan(ra);
-
-        if (ra > PI)
-        {
-            ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
-            rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-            yo = -SQUARE_SIZE;
-            xo = -yo * aTan;
-        }
-        else if (ra < PI)
-        {
-            ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
-            rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-            yo = SQUARE_SIZE;
-            xo = -yo * aTan;
-        }
-        else if (ra == 0 || ra == PI)
-        {
-            rx = win->player->player_x;
-            ry = win->player->player_y;
-            dof = 8;
-        }
-        while (dof < 8)
-        {
-            mx = (int)rx / SQUARE_SIZE;
-            my = (int)ry / SQUARE_SIZE;
-            mp = my * win->map->width + mx;
-			(void)mp;
-            // Check if the ray is out of bounds
-            if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
-				break ;
-
-            // Check if the ray hits a wall
-            if (mx < win->map->width && my < win->map->height && win->map->coord[my][mx] == '1')
-				dof = 8;
-            else
-            {
-                rx += xo;
-                ry += yo;
-                dof++;
-            }
-        }
-        // Ensure rx and ry are within map boundaries before calling ft_bresenhams_alg
-        if (rx < 0)
-			rx = 0;
-        if (rx >= win->map->width * SQUARE_SIZE)
-			rx = win->map->width * SQUARE_SIZE - 1;
-        if (ry < 0)
-			ry = 0;
-        if (ry >= win->map->height * SQUARE_SIZE)
-			ry = win->map->height * SQUARE_SIZE - 1;
-        ft_bresenhams_alg(win, rx, ry);
-    }
+	while (r++ < 1)
+	{
+		get_horizontal_intersection(win, ra, &hx, &hy);
+		get_vertical_intersection(win, ra, &vx, &vy);
+		line_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
+		line_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
+		if (line_h > line_v)
+		{
+			rx = vx;
+			ry = vy;
+		}
+		else
+		{
+			rx = hx;
+			ry = hy;
+		}
+		ft_bresenhams_alg(win, rx, ry, 0x0000ff);
+	}
 }
+
+
+
+
 
 int	draw(t_mlx *win)
 {
