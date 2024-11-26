@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/21 20:39:38 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:49:00 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	draw(t_mlx *win)
 	ft_draw_map(win->map, &win->img, win);
 	ft_update_player(win->player->player_x, win->player->player_y, &win->img, win);
 	ft_vision_angle(win, win->player->player_x, win->player->player_y);
+	//render_background(&win->img, 0xD3D3D3);
 	raycaster(win);
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
 		win->img.mlx_img, 0, 0);

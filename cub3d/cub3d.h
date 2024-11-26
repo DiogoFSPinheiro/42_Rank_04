@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/21 20:39:54 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:25:13 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 # include <math.h>
 
 # define PI 3.14159265359
-# define P2 PI/2
-# define P3 3*PI/2
+# define P2 1.57079632679 // PI/2
+# define P3 4.71238898038 //3*PI/2
+# define DR 0.0174533
 # define WIDTH 1920
 # define HEIGHT 980
 
@@ -45,22 +46,22 @@ typedef enum e_exit
 //--------- calculations -------
 typedef struct s_intersection_vars
 {
-	float rx;
-	float ry;
-	float xo;
-	float yo;
+	float	rx;
+	float	ry;
+	float	xo;
+	float	yo;
 }	t_intersection_vars;
 
 typedef struct s_ray_vars
 {
-    float rx;
-    float ry;
-    float hx;
-    float hy;
-    float vx;
-    float vy;
-    float line_h;
-    float line_v;
+	float	rx;
+	float	ry;
+	float	hx;
+	float	hy;
+	float	vx;
+	float	vy;
+	float	line_h;
+	float	line_v;
 }	t_ray_vars;
 //--------- ------------ -------
 

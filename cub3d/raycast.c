@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/21 20:47:44 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:51:39 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
  * - @xo: X-offset for stepping to the next grid cell.
  * - @yo: Y-offset for stepping to the next grid cell.
  * - @atan:(aTan) Inverse of tangent (used for ray_h direction).
- * - @ntan:(nTan) Negative tangent (used for ray_h direction).
+ * - @ntan:(nTan) Negative tangent (used for ray_v direction).
  *
 **/
 
-void	get_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
+void	ft_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
 {
 	int mx, my, dof = 0;
 	float rx, ry, xo, yo, aTan;
@@ -73,11 +73,11 @@ void	get_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
 			dof++;
 		}
 	}
-	*hx = fmax(0, fmin(rx, win->map->width * SQUARE_SIZE - 1));
-	*hy = fmax(0, fmin(ry, win->map->height * SQUARE_SIZE - 1));
+	*hx = rx;
+	*hy = ry;
 }
 
-void    get_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
+void	ft_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
 {
 	int mx, my, dof = 0;
 	float rx, ry, xo, yo, nTan;
@@ -120,34 +120,81 @@ void    get_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
 			dof++;
 		}
 	}
-	*vx = fmax(0, fmin(rx, win->map->width * SQUARE_SIZE - 1));
-	*vy = fmax(0, fmin(ry, win->map->height * SQUARE_SIZE - 1));
+	*vx = rx;
+	*vy = ry;
 }
 
-void    ft_value_setter(float *rx, float *ry, float x, float y)
+void	ft_value_setter(float *rx, float *ry, float x, float y)
 {
-    *rx = x;
-	*ry = y;   
+	*rx = x;
+	*ry = y;
 }
+
+/*
+	this places the angle on the right position (value) 
+	of ra on the trignometric circle
+	if ra = -180{ (-180) + 2PI } ra = 180
+	if ra = 390{ 390 - 2PI } ra = 30
+*/
+void	ft_circle_normalizer(float *ra)
+{
+	if (*ra < 0)
+		*ra += 2 * PI;
+	if (*ra > 2 * PI)
+		*ra -= 2 * PI;
+}
+
+void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
+{
+	int y;
+
+	y = start;
+	while (y < end)
+	{
+		mlx_pixel_put(win->mlx_connect, win->mlx_win, x, y, color);
+		y++;
+	}
+}
+
 
 void    raycaster(t_mlx *win)
 {
 	int r;
-	float rx, ry, hx, hy, vx, vy, line_h, line_v;
+	float rx, ry, hx, hy, vx, vy, ray_h, ray_v, line;
 	float ra;
 
 	r = 0;
-	ra = win->player->player_angle;
-	while (r++ < 1)
+	ra = win->player->player_angle - DR * 30;
+	ft_circle_normalizer(&ra);
+	while (r++ < 60)
 	{
-		get_horizontal_intersection(win, ra, &hx, &hy);
-		get_vertical_intersection(win, ra, &vx, &vy);
-		line_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
-		line_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
-		if (line_h > line_v)
+		ft_horizontal_intersection(win, ra, &hx, &hy);
+		ft_vertical_intersection(win, ra, &vx, &vy);
+		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
+		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
+		if (ray_h > ray_v)
+		{
 			ft_value_setter(&rx, &ry, vx, vy);
+			line = ray_v;
+		}
 		else
+		{
 			ft_value_setter(&rx, &ry, hx, hy);
+			line = ray_h;
+		}
 		ft_bresenhams_alg(win, rx, ry, 0x0000ff);
+		int line_h = HEIGHT / line;
+		int top_pixel = -line_h / 2 + HEIGHT / 2;
+		int bot_pixel = line_h / 2 + HEIGHT / 2;
+		if (top_pixel < 0)
+			top_pixel = 0;
+		if (bot_pixel >= HEIGHT)
+			bot_pixel = HEIGHT - 1;
+		ra += DR;
+		ft_circle_normalizer(&ra);
 	}
 }
+
+
+
+
