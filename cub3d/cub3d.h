@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/26 15:25:13 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:38:20 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@
 # define PI 3.14159265359
 # define P2 1.57079632679 // PI/2
 # define P3 4.71238898038 //3*PI/2
-# define DR 0.0174533
+
+#define FOV (PI / 3)  // 60 degrees in radians
+
+
 # define WIDTH 1920
 # define HEIGHT 980
 
@@ -36,6 +39,7 @@
 # define PLAYER_BUFFER_SIZE 1
 # define OBSTACLE_COLOR 0x000000
 
+# define DR (FOV / WIDTH) //0.0174533
 
 typedef enum e_exit
 {
@@ -108,6 +112,7 @@ void	ft_bresenhams_alg(t_mlx *win, float end_x, float end_y, int color);
 
 void	my_pixel_put(t_img *img, int x, int y, int color);
 void	render_background(t_img *img, int color);
+void	render_background_top_bot(t_img *img);
 
 // --------------- events.c --------------------- //
 

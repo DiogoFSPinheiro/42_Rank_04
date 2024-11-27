@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/26 18:51:39 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:40:16 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,45 +156,91 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 	}
 }
 
+void draw_3d_walls(t_mlx *win, float distance, int column, int color)
+{
+	float	lineH;
+	float	line_start;
+	float	line_end;
+
+	// Calculate wall height based on distance
+	lineH = (SQUARE_SIZE * HEIGHT) / distance;
+	if (lineH > HEIGHT)
+		lineH = HEIGHT;
+
+	// Calculate start and end positions
+	line_start = (HEIGHT / 2) - (lineH / 2);
+	line_end = line_start + lineH;
+
+	// Draw vertical line for the wall
+	while (line_start < line_end)
+	{
+		my_pixel_put(&win->img, column, (int)line_start, color);
+		line_start++;
+	}
+}
+
 
 void    raycaster(t_mlx *win)
 {
 	int r;
-	float rx, ry, hx, hy, vx, vy, ray_h, ray_v, line;
+	float hx, hy, vx, vy, ray_h, ray_v, line;
 	float ra;
+	int wall_color;
 
-	r = 0;
-	ra = win->player->player_angle - DR * 30;
+	r = -1;
+	ra = win->player->player_angle - (FOV / 2);//DR * 30;
 	ft_circle_normalizer(&ra);
-	while (r++ < 60)
+	while (++r < WIDTH)
 	{
 		ft_horizontal_intersection(win, ra, &hx, &hy);
 		ft_vertical_intersection(win, ra, &vx, &vy);
 		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
 		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
-		if (ray_h > ray_v)
+		if (ray_h < ray_v) // Horizontal intersection is closer
 		{
-			ft_value_setter(&rx, &ry, vx, vy);
-			line = ray_v;
-		}
-		else
-		{
-			ft_value_setter(&rx, &ry, hx, hy);
+			//ft_value_setter(&rx, &ry, hx, hy);
+			if (hy > win->player->player_y) // South wall (yo > 0)// North wall (inverso)
+				wall_color = 0xFF0000; // Red
+			else // North wall (yo < 0)
+				wall_color = 0x0000FF; // Blue
 			line = ray_h;
 		}
-		ft_bresenhams_alg(win, rx, ry, 0x0000ff);
-		int line_h = HEIGHT / line;
-		int top_pixel = -line_h / 2 + HEIGHT / 2;
-		int bot_pixel = line_h / 2 + HEIGHT / 2;
-		if (top_pixel < 0)
-			top_pixel = 0;
-		if (bot_pixel >= HEIGHT)
-			bot_pixel = HEIGHT - 1;
+		else // Vertical intersection is closer
+		{
+			//ft_value_setter(&rx, &ry, vx, vy);
+			if (vx > win->player->player_x) // East wall (xo > 0)
+				wall_color = 0x00FF00; // Green
+			else // West wall (xo < 0)
+				wall_color = 0xFFFF00; // Yellow
+			line = ray_v;
+		}
+		//ft_bresenhams_alg(win, rx, ry, 0x0000ff);
+		line = line * cos(win->player->player_angle - ra);
+		draw_3d_walls(win, line, r, wall_color);
 		ra += DR;
 		ft_circle_normalizer(&ra);
 	}
 }
 
+/*
 
+		if (ray_h > ray_v)
+		{
+			ft_value_setter(&rx, &ry, vx, vy);
+			if (ra < PI) // Facing North
+				wall_color = 0x0000FF; // Blue
+			else // Facing South
+				wall_color = 0xFF0000; // Red
+			line = ray_v;
+		}
+		else
+		{
+			ft_value_setter(&rx, &ry, hx, hy);
+			if (ra > P2 && ra < P3) // Facing West
+				wall_color = 0xFFFF00; // Yellow
+			else if (ra < P2 || ra > P3)  // Facing East
+				wall_color = 0x00FF00; // Green
+			line = ray_h;
+		}
 
-
+*/
