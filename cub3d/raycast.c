@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 18:53:46 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:29:13 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,16 +148,11 @@ void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 	float	line_start;
 	float	line_end;
 
-	// Calculate wall height based on distance
 	lineH = (SQUARE_SIZE * HEIGHT) / distance;
 	if (lineH > HEIGHT)
 		lineH = HEIGHT;
-
-	// Calculate start and end positions
 	line_start = (HEIGHT / 2) - (lineH / 2);
 	line_end = line_start + lineH;
-
-	// Draw vertical line for the wall
 	while (line_start < line_end)
 	{
 		my_pixel_put(&win->img, column, (int)line_start, color);
@@ -166,6 +161,9 @@ void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 }
 
 /*
+*	the horizontal lines tell north from south
+*	the vertical lines tell east from west
+*
 *	the directions are inverted
 *	South -> North
 *	North -> South
@@ -190,21 +188,20 @@ void    raycaster(t_mlx *win)
 		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
 		if (ray_h < ray_v) // Horizontal intersection is closer
 		{
-			if (hy > win->player->player_y) // South wall (yo > 0)
+			if (hy > win->player->player_y) // South wall 
 				wall_color = 0xFF0000; // Red
-			else // North wall (yo < 0)
+			else // North wall
 				wall_color = 0x0000FF; // Blue
 			line = ray_h;
 		}
 		else // Vertical intersection is closer
 		{
-			if (vx > win->player->player_x) // East wall (xo > 0)
+			if (vx > win->player->player_x) // East wall 
 				wall_color = 0x00FF00; // Green
-			else // West wall (xo < 0)
+			else // West wall 
 				wall_color = 0xFFFF00; // Yellow
 			line = ray_v;
 		}
-		//ft_bresenhams_alg(win, rx, ry, 0x0000ff);
 		line = line * cos(win->player->player_angle - ra);
 		draw_3d_walls(win, line, r, wall_color);
 		ra += DR;
