@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 10:38:20 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:54:10 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	draw_square(t_img *img, int x, int y, int color);
 int		ft_mod(int n);
 void	set_up_win(t_mlx *win, char **map);
 float	line_length(float x1, float y1, float x2, float y2);
+void	ft_circle_normalizer(float *ra);
 
 // --------------- raycast.c --------------------- //
 

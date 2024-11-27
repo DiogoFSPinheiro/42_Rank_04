@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 13:59:42 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:58:05 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	draw(t_mlx *win)
 	ft_draw_map(win->map, &win->img, win);
 	ft_update_player(win->player->player_x, win->player->player_y, &win->img, win);
 	ft_vision_angle(win, win->player->player_x, win->player->player_y);
-	//render_background(&win->img, 0xD3D3D3);
 	render_background_top_bot(&win->img);
 	raycaster(win);
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
@@ -79,13 +78,13 @@ int	draw(t_mlx *win)
 	return (0);
 }
 
-void	render(char **map)
+void	render(t_mlx *win) //render(char **map)
 {
-	t_mlx	*win;
+	//t_mlx	*win;
 
 
-	win = malloc(sizeof(t_mlx));
-	set_up_win(win, map);
+	//win = malloc(sizeof(t_mlx));
+	//set_up_win(win, map);
 	win->mlx_connect = mlx_init();
 	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub3D");
 	win->img.mlx_img = mlx_new_image(win->mlx_connect, WIDTH, HEIGHT);
@@ -113,7 +112,12 @@ int	main(void)
 	"111101111111010111",
 	"111111111111111111"};
 
+	t_mlx	*win;
 
-	render(data);
+
+	win = malloc(sizeof(t_mlx));
+	win = malloc(sizeof(t_mlx));
+	set_up_win(win, data);
+	render(win);
 	return (0);
 }

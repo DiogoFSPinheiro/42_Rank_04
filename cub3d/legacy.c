@@ -264,3 +264,47 @@ void	raycaster_old(t_mlx *win)
 }
 
 */
+
+/* isto e para depis fazer o minimap
+void    raycaster(t_mlx *win)
+{
+	int r;
+	float hx, hy, vx, vy, ray_h, ray_v, line;
+	float ra;
+	int wall_color;
+
+	r = -1;
+	ra = win->player->player_angle - (FOV / 2);
+	ft_circle_normalizer(&ra);
+	while (++r < WIDTH)
+	{
+		ft_horizontal_intersection(win, ra, &hx, &hy);
+		ft_vertical_intersection(win, ra, &vx, &vy);
+		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
+		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
+		if (ray_h < ray_v) // Horizontal intersection is closer
+		{
+			//ft_value_setter(&rx, &ry, hx, hy);
+			if (hy > win->player->player_y) // South wall (yo > 0)// North wall (inverso)
+				wall_color = 0xFF0000; // Red
+			else // North wall (yo < 0)
+				wall_color = 0x0000FF; // Blue
+			line = ray_h;
+		}
+		else // Vertical intersection is closer
+		{
+			//ft_value_setter(&rx, &ry, vx, vy);
+			if (vx > win->player->player_x) // East wall (xo > 0)
+				wall_color = 0x00FF00; // Green
+			else // West wall (xo < 0)
+				wall_color = 0xFFFF00; // Yellow
+			line = ray_v;
+		}
+		//ft_bresenhams_alg(win, rx, ry, 0x0000ff);
+		line = line * cos(win->player->player_angle - ra);
+		draw_3d_walls(win, line, r, wall_color);
+		ra += DR;
+		ft_circle_normalizer(&ra);
+	}
+}
+*/

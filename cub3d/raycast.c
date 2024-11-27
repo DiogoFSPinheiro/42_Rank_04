@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 18:40:16 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:53:46 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,20 +130,6 @@ void	ft_value_setter(float *rx, float *ry, float x, float y)
 	*ry = y;
 }
 
-/*
-	this places the angle on the right position (value) 
-	of ra on the trignometric circle
-	if ra = -180{ (-180) + 2PI } ra = 180
-	if ra = 390{ 390 - 2PI } ra = 30
-*/
-void	ft_circle_normalizer(float *ra)
-{
-	if (*ra < 0)
-		*ra += 2 * PI;
-	if (*ra > 2 * PI)
-		*ra -= 2 * PI;
-}
-
 void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 {
 	int y;
@@ -179,16 +165,22 @@ void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 	}
 }
 
-
+/*
+*	the directions are inverted
+*	South -> North
+*	North -> South
+*	etc etc
+*
+*/
 void    raycaster(t_mlx *win)
 {
-	int r;
-	float hx, hy, vx, vy, ray_h, ray_v, line;
-	float ra;
-	int wall_color;
+	int		r;
+	float	hx, hy, vx, vy, ray_h, ray_v, line;
+	float	ra;
+	int		wall_color;
 
 	r = -1;
-	ra = win->player->player_angle - (FOV / 2);//DR * 30;
+	ra = win->player->player_angle - (FOV / 2);
 	ft_circle_normalizer(&ra);
 	while (++r < WIDTH)
 	{
@@ -198,8 +190,7 @@ void    raycaster(t_mlx *win)
 		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
 		if (ray_h < ray_v) // Horizontal intersection is closer
 		{
-			//ft_value_setter(&rx, &ry, hx, hy);
-			if (hy > win->player->player_y) // South wall (yo > 0)// North wall (inverso)
+			if (hy > win->player->player_y) // South wall (yo > 0)
 				wall_color = 0xFF0000; // Red
 			else // North wall (yo < 0)
 				wall_color = 0x0000FF; // Blue
@@ -207,7 +198,6 @@ void    raycaster(t_mlx *win)
 		}
 		else // Vertical intersection is closer
 		{
-			//ft_value_setter(&rx, &ry, vx, vy);
 			if (vx > win->player->player_x) // East wall (xo > 0)
 				wall_color = 0x00FF00; // Green
 			else // West wall (xo < 0)
@@ -221,26 +211,3 @@ void    raycaster(t_mlx *win)
 		ft_circle_normalizer(&ra);
 	}
 }
-
-/*
-
-		if (ray_h > ray_v)
-		{
-			ft_value_setter(&rx, &ry, vx, vy);
-			if (ra < PI) // Facing North
-				wall_color = 0x0000FF; // Blue
-			else // Facing South
-				wall_color = 0xFF0000; // Red
-			line = ray_v;
-		}
-		else
-		{
-			ft_value_setter(&rx, &ry, hx, hy);
-			if (ra > P2 && ra < P3) // Facing West
-				wall_color = 0xFFFF00; // Yellow
-			else if (ra < P2 || ra > P3)  // Facing East
-				wall_color = 0x00FF00; // Green
-			line = ray_h;
-		}
-
-*/

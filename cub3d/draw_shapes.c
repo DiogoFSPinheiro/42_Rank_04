@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:45:28 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 17:54:49 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:56:17 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	draw_square(t_img *img, int x, int y, int color)
 	}
 }
 
+/*
+* TODO remover a coordenada do player quando o Paulo
+* tiver a colocar na estrutura
+*/
 void	ft_draw_map(t_map *map, t_img *img, t_mlx *win)
 {
 	int			y;
@@ -82,7 +86,8 @@ void	ft_update_player(int px, int py, t_img *img, t_mlx *win)
 		while (x < size && x + px < WIDTH)
 		{
 			if (x > 0 && y > 0)
-				my_pixel_put(img, x + px - PLAYER_SIZE / 2, y + py - PLAYER_SIZE / 2, 0x0000F0);
+				my_pixel_put(img, x + px - PLAYER_SIZE / 2,
+					y + py - PLAYER_SIZE / 2, 0x0000F0);
 			x++;
 		}
 		y++;

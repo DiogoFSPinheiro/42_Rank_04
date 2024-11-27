@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/21 20:39:44 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:53:51 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ int	ft_mod(int n)
 float	line_length(float x1, float y1, float x2, float y2)
 {
 	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+}
+
+/*
+	this places the angle on the right position (value) 
+	of ra on the trignometric circle
+	if ra = -180{ (-180) + 2PI } ra = 180
+	if ra = 390{ 390 - 2PI } ra = 30
+*/
+void	ft_circle_normalizer(float *ra)
+{
+	if (*ra < 0)
+		*ra += 2 * PI;
+	if (*ra > 2 * PI)
+		*ra -= 2 * PI;
 }
 
 void	set_up_win(t_mlx *win, char **map)
