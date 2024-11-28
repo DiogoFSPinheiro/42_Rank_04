@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 17:13:50 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:15:44 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,59 +143,38 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 	}
 }
 
-/*
-void	draw_3d_walls(t_mlx *win, float distance, int column, int color)
-{
-	int	line_h;
-	int	line_start;
-	int	line_end;
-
-	(void)color;
-	line_h = (SQUARE_SIZE * HEIGHT) / distance;
-	if (line_h > HEIGHT)
-		line_h = HEIGHT;
-	line_start = (HEIGHT / 2) - (line_h / 2);
-	line_end = line_start + line_h;
-
-	//float ty = 0;
-	//float ty_step = 32.0 / (float)line_h;
-	int y = -1;
-	while (++y < line_h)//line_start < line_end)
-	{
-		float c = get_pixel_color( &win->north_texture, column, y);
-		my_pixel_put(&win->img, column, (int)line_start + y, c);
-	}
-}
-*/
 
 void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 {
     int line_h;
     int line_start;
-    int line_end;
+   // int line_end;
     int y;
-    int tex_y;
-    int tex_x = column % win->north_texture.width; // Assuming simple mapping for now
-    float step;
+	int tex_x;
+	int	tex_y;
+	float	y_offset;
 
 	(void)color;
+	tex_x = column % win->north_texture.width;
     line_h = (SQUARE_SIZE * HEIGHT) / distance;
+
+	float ty_step = 32 / line_h;
     if (line_h > HEIGHT)
-        line_h = HEIGHT;
+	{
+		y_offset = (line_h - HEIGHT) / 2;
+		line_h = HEIGHT;
+	}
+        
 
     line_start = (HEIGHT / 2) - (line_h / 2);
-    line_end = line_start + line_h;
-
-    // Step size for texture mapping
-    step = 1.0 * win->north_texture.height / line_h;
-	//float ty = 0;
-	//float ty_step = 32.0 / (float)line_h;
+    //line_end = line_start + line_h;
+	tex_y = y_offset * ty_step;
     y = -1;
     while (++y < line_h)
     {
-        tex_y = (int)((y / (float)line_h) * win->north_texture.height);
-        int color = get_pixel_color(&win->north_texture, tex_x, tex_y);
-        my_pixel_put(&win->img, column, line_start + y, color);
+		float t_color = get_pixel_color(&win->north_texture, tex_x, tex_y*32);
+		my_pixel_put(&win->img, column, line_start + y, t_color);
+		tex_y += ty_step;
     }
 }
 
