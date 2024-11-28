@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 13:33:11 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:46:00 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,17 @@ int	draw(t_mlx *win)
 
 void	render(t_mlx *win) //render(char **map)
 {
-	//t_mlx	*win;
-
-
-	//win = malloc(sizeof(t_mlx));
-	//set_up_win(win, map);
 	win->mlx_connect = mlx_init();
 	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub3D");
 	win->img.mlx_img = mlx_new_image(win->mlx_connect, WIDTH, HEIGHT);
 	win->img.addr = mlx_get_data_addr(win->img.mlx_img, &win->img.bpp,
 			&win->img.line_len, &win->img.endian);
+	win->north_texture.mlx_img = mlx_xpm_file_to_image(win->mlx_connect,
+			"./assets/north_texture.xpm", &win->north_texture.width,
+			&win->north_texture.height);
+	win->north_texture.addr = mlx_get_data_addr(win->north_texture.mlx_img,
+			&win->north_texture.bpp, &win->north_texture.line_len,
+			&win->north_texture.endian);
 	mlx_loop_hook(win->mlx_connect, &draw, win);
 	mlx_key_hook(win->mlx_win, arrow_keys, win);
 	mlx_hook(win->mlx_win, KeyPress, KeyPressMask, ft_event_checker, win);

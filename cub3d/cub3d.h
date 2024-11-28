@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 18:54:10 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:00:59 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 
 #define FOV (PI / 3)  // 60 degrees in radians
 
+# define TEXTURE_H 64
+# define TEXTURE_Y 64
 
 # define WIDTH 1920
 # define HEIGHT 980
@@ -94,6 +96,17 @@ typedef struct s_player
 	float	player_angle;
 }	t_player;
 
+typedef struct s_tex
+{
+	void	*mlx_img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_tex;
+
 typedef struct s_mlx
 {
 	void		*mlx_connect;
@@ -101,6 +114,7 @@ typedef struct s_mlx
 	t_player	*player;
 	t_map		*map;
 	t_img		img;
+	t_tex		north_texture;
 }	t_mlx;
 
 // --------------- main.c ------------------------- //
@@ -120,6 +134,7 @@ void	ft_cleanup_and_exit(t_mlx *mlx);
 int		ft_close(t_mlx *mlx);
 int		ft_event_checker(int Key, t_mlx *mlx);
 int		arrow_keys(int Key, t_mlx *mlx);
+int	get_pixel_color(t_tex *img, int x, int y);
 
 // --------------- draw_shapes.c ---------------- //
 

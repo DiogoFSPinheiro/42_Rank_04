@@ -6,11 +6,12 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 11:49:24 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:13:50 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <math.h>
 
 /**
  * raycaster - Casts rays to determine intersections with the map.
@@ -142,31 +143,62 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 	}
 }
 
+/*
 void	draw_3d_walls(t_mlx *win, float distance, int column, int color)
 {
-	float	lineH;
-	float	line_start;
-	float	line_end;
+	int	line_h;
+	int	line_start;
+	int	line_end;
 
-	lineH = (SQUARE_SIZE * HEIGHT) / distance;
-	if (lineH > HEIGHT)
-		lineH = HEIGHT;
-	line_start = (HEIGHT / 2) - (lineH / 2);
-	line_end = line_start + lineH;
-	float n = lineH / 3;
-	while (line_start < line_end)
+	(void)color;
+	line_h = (SQUARE_SIZE * HEIGHT) / distance;
+	if (line_h > HEIGHT)
+		line_h = HEIGHT;
+	line_start = (HEIGHT / 2) - (line_h / 2);
+	line_end = line_start + line_h;
+
+	//float ty = 0;
+	//float ty_step = 32.0 / (float)line_h;
+	int y = -1;
+	while (++y < line_h)//line_start < line_end)
 	{
-		if (line_start - line_start < lineH * 0.3)
-			my_pixel_put(&win->img, column, (int)line_start, color * n);
-		else if (line_start - line_start < lineH * 0.6)
-			my_pixel_put(&win->img, column, (int)line_start, color * n);
-		else if (line_start - line_start < lineH * 0.9)
-			my_pixel_put(&win->img, column, (int)line_start, color * n);
-		else
-			my_pixel_put(&win->img, column, (int)line_start, color * n);
-		line_start++;
+		float c = get_pixel_color( &win->north_texture, column, y);
+		my_pixel_put(&win->img, column, (int)line_start + y, c);
 	}
 }
+*/
+
+void draw_3d_walls(t_mlx *win, float distance, int column, int color)
+{
+    int line_h;
+    int line_start;
+    int line_end;
+    int y;
+    int tex_y;
+    int tex_x = column % win->north_texture.width; // Assuming simple mapping for now
+    float step;
+
+	(void)color;
+    line_h = (SQUARE_SIZE * HEIGHT) / distance;
+    if (line_h > HEIGHT)
+        line_h = HEIGHT;
+
+    line_start = (HEIGHT / 2) - (line_h / 2);
+    line_end = line_start + line_h;
+
+    // Step size for texture mapping
+    step = 1.0 * win->north_texture.height / line_h;
+	//float ty = 0;
+	//float ty_step = 32.0 / (float)line_h;
+    y = -1;
+    while (++y < line_h)
+    {
+        tex_y = (int)((y / (float)line_h) * win->north_texture.height);
+        int color = get_pixel_color(&win->north_texture, tex_x, tex_y);
+        my_pixel_put(&win->img, column, line_start + y, color);
+    }
+}
+
 
 /*
 *	the horizontal lines tell north from south
@@ -178,6 +210,8 @@ void	draw_3d_walls(t_mlx *win, float distance, int column, int color)
 *	etc etc
 *
 */
+
+
 void    raycaster(t_mlx *win)
 {
 	int		r;

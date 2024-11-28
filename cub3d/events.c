@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:32:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/20 16:43:52 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:04:58 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_event_checker(int Key, t_mlx *mlx)
 	return (0);
 }
 
-int	get_pixel_color(t_img *img, int x, int y)
+int	get_pixel_color(t_tex *img, int x, int y)
 {
 	char	*pixel;
 
@@ -69,7 +69,7 @@ int	get_pixel_color(t_img *img, int x, int y)
 }
 
 
-
+/*
 int	check_collision_x(t_mlx *mlx, int pos_x, int pos_y, int direction)
 {
 	int	x;
@@ -125,6 +125,7 @@ int	check_collision_y(t_mlx *mlx, int pos_x, int pos_y, int direction)
 	}
 	return (SUCCESS);
 }
+*/
 
 int	arrow_keys(int Key, t_mlx *mlx)
 {
