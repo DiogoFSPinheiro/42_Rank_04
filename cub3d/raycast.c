@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 21:29:13 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 11:49:24 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 	}
 }
 
-void draw_3d_walls(t_mlx *win, float distance, int column, int color)
+void	draw_3d_walls(t_mlx *win, float distance, int column, int color)
 {
 	float	lineH;
 	float	line_start;
@@ -153,9 +153,17 @@ void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 		lineH = HEIGHT;
 	line_start = (HEIGHT / 2) - (lineH / 2);
 	line_end = line_start + lineH;
+	float n = lineH / 3;
 	while (line_start < line_end)
 	{
-		my_pixel_put(&win->img, column, (int)line_start, color);
+		if (line_start - line_start < lineH * 0.3)
+			my_pixel_put(&win->img, column, (int)line_start, color * n);
+		else if (line_start - line_start < lineH * 0.6)
+			my_pixel_put(&win->img, column, (int)line_start, color * n);
+		else if (line_start - line_start < lineH * 0.9)
+			my_pixel_put(&win->img, column, (int)line_start, color * n);
+		else
+			my_pixel_put(&win->img, column, (int)line_start, color * n);
 		line_start++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 20:45:23 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:33:11 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ int	main(void)
 
 	t_mlx	*win;
 
-
-	win = malloc(sizeof(t_mlx));
 	win = malloc(sizeof(t_mlx));
 	set_up_win(win, data);
 	render(win);
