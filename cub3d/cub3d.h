@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/29 14:01:47 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:29:32 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ typedef struct s_intersection_vars
 
 typedef struct s_ray_vars
 {
-	float	rx;
-	float	ry;
+	int		r;
 	float	hx;
 	float	hy;
 	float	vx;
@@ -70,6 +69,20 @@ typedef struct s_ray_vars
 	float	line_v;
 }	t_ray_vars;
 //--------- ------------ -------
+
+//--------- texture calculations -------
+
+typedef struct s_texture_vars
+{
+	int		y;
+	float	ty;
+	float	tx;
+	float	ty_step;
+	float	ty_offset;
+}	t_texture_vars;
+
+//----------------------------
+
 
 typedef struct s_map
 {
@@ -151,7 +164,7 @@ void	draw_square(t_img *img, int x, int y, int color);
 int		ft_mod(int n);
 void	set_up_win(t_mlx *win, char **map);
 float	line_length(float x1, float y1, float x2, float y2);
-void	ft_circle_normalizer(float *ra);
+int		ft_circle_normalizer(float *ra);
 
 // --------------- raycast.c --------------------- //
 

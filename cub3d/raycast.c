@@ -6,12 +6,11 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/29 14:00:55 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:37:28 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <math.h>
 
 /**
  * raycaster - Casts rays to determine intersections with the map.
@@ -155,43 +154,36 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 	}
 }
 
-
+void	ft_wall_limits(int *line_h, float *ty_offset)
+{
+	if (*line_h > HEIGHT)
+	{
+		*ty_offset = ((float)*line_h - HEIGHT) / 2;
+		*line_h = HEIGHT;
+	}
+}
 
 void	draw_3d_walls(t_mlx *win, float distance, int column, float hx)
 {
 	int	line_h;
 	int	line_start;
-	int	y;
-	int	color;
 	t_tex texture_to_use;
+	t_texture_vars vars;
 	
-	//-----texture----
-	float ty;
-	float tx;
-	float ty_step;
-	float ty_offset;
-	//---------------
-
 	line_h = (SQUARE_SIZE * HEIGHT) / distance;
-	ty_step = 64 / (float)line_h;
-	ty_offset = 0;
-	if (line_h > HEIGHT)
-	{
-		ty_offset = ((float)line_h - HEIGHT) / 2;
-		line_h = HEIGHT;
-	}
+	vars.ty_step = 64 / (float)line_h;
+	vars.ty_offset = 0;
+	ft_wall_limits(&line_h, &vars.ty_offset);
 	line_start = (HEIGHT / 2) - (line_h / 2);
-	y = -1;
-	ty = ty_step * ty_offset;
-	tx = (int)(hx) % 64;
-
-	ft_texture_setter(win, &texture_to_use, &tx);
-
-	while (++y < line_h)
+	vars.y = -1;
+	vars.ty = vars.ty_step * vars.ty_offset;
+	vars.tx = (int)(hx) % 64;
+	ft_texture_setter(win, &texture_to_use, &vars.tx);
+	while (++vars.y < line_h)
 	{
-		color = get_pixel_color(&texture_to_use, ((int)tx) % SQUARE_SIZE, (int)(ty));
-		my_pixel_put(&win->img, column, line_start + y, color);
-		ty += ty_step;
+		my_pixel_put(&win->img, column, line_start + vars.y, get_pixel_color(&texture_to_use,
+			((int)vars.tx) % SQUARE_SIZE, (int)(vars.ty)));
+		vars.ty += vars.ty_step;
 	}
 }
 
@@ -205,18 +197,38 @@ void	draw_3d_walls(t_mlx *win, float distance, int column, float hx)
 *	etc etc
 *
 */
+void	ft_texture_picker(t_mlx *win, float ray_point, char c)
+{
+	if (c == 'h')
+	{
+		if (ray_point > win->player->player_y) // South wall 
+			win->texture_nbr = 0;
+		else // North wall
+			win->texture_nbr = 1;
+	}
+	else
+	{
+		if (ray_point > win->player->player_x) // East wall 
+			win->texture_nbr = 2;
+		else // West wall 
+			win->texture_nbr = 3;
+	}
+}
 
-void    raycaster(t_mlx *win)
+void	ft_value_setter(float *val1, float *set1, float *val2, float *set2)
+{
+	*val1 = *set1;
+	*val2 = *set2;
+}
+
+void	raycaster(t_mlx *win)// TODO place the vals in a struct
 {
 	int		r;
-	float	hx, hy, vx, vy, ray_h, ray_v, line;
-	float	ra;
-	float	wall_x;
+	float	hx, hy, vx, vy, ray_h, ray_v, line, ra, wall_x;
 
 	r = -1;
 	ra = win->player->player_angle - (FOV / 2);
-	ft_circle_normalizer(&ra);
-	while (++r < WIDTH)
+	while (++r < WIDTH && ft_circle_normalizer(&ra) == SUCCESS)
 	{
 		ft_horizontal_intersection(win, ra, &hx, &hy);
 		ft_vertical_intersection(win, ra, &vx, &vy);
@@ -224,25 +236,19 @@ void    raycaster(t_mlx *win)
 		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
 		if (ray_h < ray_v)
 		{
-			if (hy > win->player->player_y) // South wall 
-				win->texture_nbr = 0;
-			else // North wall
-				win->texture_nbr = 1;
-			wall_x = hx;
-			line = ray_h;
+			ft_texture_picker(win, hy, 'h');
+			ft_value_setter(&wall_x, &hx, &line, &ray_h);
 		}
 		else
 		{
-			if (vx > win->player->player_x) // East wall 
-				win->texture_nbr = 2;
-			else // West wall 
-				win->texture_nbr = 3;
-			line = ray_v;
-			wall_x = vy;
+			ft_texture_picker(win, vx, 'v');
+			ft_value_setter(&wall_x, &vy, &line, &ray_v);
 		}
 		line = line * cos(win->player->player_angle - ra);
 		draw_3d_walls(win, line, r, wall_x);
 		ra += DR;
-		ft_circle_normalizer(&ra);
 	}
 }
+
+
+

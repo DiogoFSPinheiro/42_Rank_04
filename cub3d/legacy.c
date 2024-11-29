@@ -308,3 +308,97 @@ void    raycaster(t_mlx *win)
 	}
 }
 */
+
+
+/* before norminete
+
+void	draw_3d_walls(t_mlx *win, float distance, int column, float hx)
+{
+	int	line_h;
+	int	line_start;
+	int	y;
+	//int	color;
+	t_tex texture_to_use;
+	
+	//-----texture----
+	float ty;
+	float tx;
+	float ty_step;
+	float ty_offset;
+	//---------------
+
+	line_h = (SQUARE_SIZE * HEIGHT) / distance;
+	ty_step = 64 / (float)line_h;
+	ty_offset = 0;
+	if (line_h > HEIGHT)
+	{
+		ty_offset = ((float)line_h - HEIGHT) / 2;
+		line_h = HEIGHT;
+	}
+	//ft_wall_limits(&line_h, &ty_offset);
+	line_start = (HEIGHT / 2) - (line_h / 2);
+	y = -1;
+	ty = ty_step * ty_offset;
+	tx = (int)(hx) % 64;
+	ft_texture_setter(win, &texture_to_use, &tx);
+	while (++y < line_h)
+	{
+		//color = get_pixel_color(&texture_to_use, ((int)tx) % SQUARE_SIZE, (int)(ty));
+		my_pixel_put(&win->img, column, line_start + y, get_pixel_color(&texture_to_use, ((int)tx) % SQUARE_SIZE, (int)(ty)));
+		ty += ty_step;
+	}
+}
+*/
+/*
+*	the horizontal lines tell north from south
+*	the vertical lines tell east from west
+*
+*	the directions are inverted
+*	South -> North
+*	North -> South
+*	etc etc
+*
+*/
+
+/*before norm
+void    raycaster(t_mlx *win)
+{
+	int		r;
+	float	hx, hy, vx, vy, ray_h, ray_v, line;
+	float	ra;
+	float	wall_x;
+
+	r = -1;
+	ra = win->player->player_angle - (FOV / 2);
+	ft_circle_normalizer(&ra);
+	while (++r < WIDTH)
+	{
+		ft_horizontal_intersection(win, ra, &hx, &hy);
+		ft_vertical_intersection(win, ra, &vx, &vy);
+		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
+		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
+		if (ray_h < ray_v)
+		{
+			if (hy > win->player->player_y) // South wall 
+				win->texture_nbr = 0;
+			else // North wall
+				win->texture_nbr = 1;
+			wall_x = hx;
+			line = ray_h;
+		}
+		else
+		{
+			if (vx > win->player->player_x) // East wall 
+				win->texture_nbr = 2;
+			else // West wall 
+				win->texture_nbr = 3;
+			line = ray_v;
+			wall_x = vy;
+		}
+		line = line * cos(win->player->player_angle - ra);
+		draw_3d_walls(win, line, r, wall_x);
+		ra += DR;
+		ft_circle_normalizer(&ra);
+	}
+}
+*/

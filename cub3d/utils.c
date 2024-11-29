@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/29 13:54:12 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:27:51 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ float	line_length(float x1, float y1, float x2, float y2)
 	if ra = -180{ (-180) + 2PI } ra = 180
 	if ra = 390{ 390 - 2PI } ra = 30
 */
-void	ft_circle_normalizer(float *ra)
+int	ft_circle_normalizer(float *ra)
 {
 	if (*ra < 0)
 		*ra += 2 * PI;
 	if (*ra > 2 * PI)
 		*ra -= 2 * PI;
+	return (SUCCESS);
 }
 
 void	set_up_win(t_mlx *win, char **map)
