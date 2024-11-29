@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:32:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 17:04:58 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:02:46 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void	ft_cleanup_and_exit(t_mlx *mlx)
 	if (mlx->mlx_connect != NULL)
 	{
 		mlx_destroy_image(mlx->mlx_connect, mlx->img.mlx_img);
+		mlx_destroy_image(mlx->mlx_connect, mlx->north_texture.mlx_img);
+		mlx_destroy_image(mlx->mlx_connect, mlx->south_texture.mlx_img);
+		mlx_destroy_image(mlx->mlx_connect, mlx->east_texture.mlx_img);
+		mlx_destroy_image(mlx->mlx_connect, mlx->west_texture.mlx_img);
 		if (mlx->mlx_win != NULL)
 			mlx_destroy_window(mlx->mlx_connect, mlx->mlx_win);
 		mlx_destroy_display(mlx->mlx_connect);

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 17:00:59 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:01:47 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define TEXTURE_Y 64
 
 # define WIDTH 1920
-# define HEIGHT 980
+# define HEIGHT 1080
 
 # define SQUARE_SIZE 64
 
@@ -115,6 +115,10 @@ typedef struct s_mlx
 	t_map		*map;
 	t_img		img;
 	t_tex		north_texture;
+	t_tex		east_texture;
+	t_tex		south_texture;
+	t_tex		west_texture;
+	int			texture_nbr;
 }	t_mlx;
 
 // --------------- main.c ------------------------- //

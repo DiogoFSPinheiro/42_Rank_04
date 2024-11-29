@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 16:20:48 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:54:12 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	set_up_win(t_mlx *win, char **map)
 	win->mlx_connect = 0;
 	win->mlx_win = 0;
 	win->map = 0;
+	win->texture_nbr = 0;
 	win->map = malloc(sizeof(t_map));
 	win->player = malloc(sizeof(t_player));
 	win->map->height = 10;

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/28 21:15:44 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:00:55 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,22 @@ void	ft_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
 	*vy = ry;
 }
 
-void	ft_value_setter(float *rx, float *ry, float x, float y)
+void	ft_texture_setter(t_mlx *win, t_tex *texture_to_use, float *tx)
 {
-	*rx = x;
-	*ry = y;
+	if (win->texture_nbr == 0)
+	{
+		*texture_to_use = win->north_texture;
+		*tx = 63 - *tx;
+	}
+	else if (win->texture_nbr == 1)
+		*texture_to_use = win->south_texture;
+	else if (win->texture_nbr == 2)
+		*texture_to_use = win->west_texture;
+	else if (win->texture_nbr == 3)
+	{
+		*texture_to_use = win->east_texture;
+		*tx = 63 - *tx;
+	}
 }
 
 void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
@@ -144,40 +156,44 @@ void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
 }
 
 
-void draw_3d_walls(t_mlx *win, float distance, int column, int color)
+
+void	draw_3d_walls(t_mlx *win, float distance, int column, float hx)
 {
-    int line_h;
-    int line_start;
-   // int line_end;
-    int y;
-	int tex_x;
-	int	tex_y;
-	float	y_offset;
+	int	line_h;
+	int	line_start;
+	int	y;
+	int	color;
+	t_tex texture_to_use;
+	
+	//-----texture----
+	float ty;
+	float tx;
+	float ty_step;
+	float ty_offset;
+	//---------------
 
-	(void)color;
-	tex_x = column % win->north_texture.width;
-    line_h = (SQUARE_SIZE * HEIGHT) / distance;
-
-	float ty_step = 32 / line_h;
-    if (line_h > HEIGHT)
+	line_h = (SQUARE_SIZE * HEIGHT) / distance;
+	ty_step = 64 / (float)line_h;
+	ty_offset = 0;
+	if (line_h > HEIGHT)
 	{
-		y_offset = (line_h - HEIGHT) / 2;
+		ty_offset = ((float)line_h - HEIGHT) / 2;
 		line_h = HEIGHT;
 	}
-        
+	line_start = (HEIGHT / 2) - (line_h / 2);
+	y = -1;
+	ty = ty_step * ty_offset;
+	tx = (int)(hx) % 64;
 
-    line_start = (HEIGHT / 2) - (line_h / 2);
-    //line_end = line_start + line_h;
-	tex_y = y_offset * ty_step;
-    y = -1;
-    while (++y < line_h)
-    {
-		float t_color = get_pixel_color(&win->north_texture, tex_x, tex_y*32);
-		my_pixel_put(&win->img, column, line_start + y, t_color);
-		tex_y += ty_step;
-    }
+	ft_texture_setter(win, &texture_to_use, &tx);
+
+	while (++y < line_h)
+	{
+		color = get_pixel_color(&texture_to_use, ((int)tx) % SQUARE_SIZE, (int)(ty));
+		my_pixel_put(&win->img, column, line_start + y, color);
+		ty += ty_step;
+	}
 }
-
 
 /*
 *	the horizontal lines tell north from south
@@ -190,13 +206,12 @@ void draw_3d_walls(t_mlx *win, float distance, int column, int color)
 *
 */
 
-
 void    raycaster(t_mlx *win)
 {
 	int		r;
 	float	hx, hy, vx, vy, ray_h, ray_v, line;
 	float	ra;
-	int		wall_color;
+	float	wall_x;
 
 	r = -1;
 	ra = win->player->player_angle - (FOV / 2);
@@ -207,24 +222,26 @@ void    raycaster(t_mlx *win)
 		ft_vertical_intersection(win, ra, &vx, &vy);
 		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
 		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
-		if (ray_h < ray_v) // Horizontal intersection is closer
+		if (ray_h < ray_v)
 		{
 			if (hy > win->player->player_y) // South wall 
-				wall_color = 0xFF0000; // Red
+				win->texture_nbr = 0;
 			else // North wall
-				wall_color = 0x0000FF; // Blue
+				win->texture_nbr = 1;
+			wall_x = hx;
 			line = ray_h;
 		}
-		else // Vertical intersection is closer
+		else
 		{
 			if (vx > win->player->player_x) // East wall 
-				wall_color = 0x00FF00; // Green
+				win->texture_nbr = 2;
 			else // West wall 
-				wall_color = 0xFFFF00; // Yellow
+				win->texture_nbr = 3;
 			line = ray_v;
+			wall_x = vy;
 		}
 		line = line * cos(win->player->player_angle - ra);
-		draw_3d_walls(win, line, r, wall_color);
+		draw_3d_walls(win, line, r, wall_x);
 		ra += DR;
 		ft_circle_normalizer(&ra);
 	}
