@@ -6,11 +6,11 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:28:06 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/02 12:00:16 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:37:40 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	my_pixel_put(t_img *img, int x, int y, int color)
 {
