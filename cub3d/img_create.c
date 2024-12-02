@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:28:06 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/27 10:38:11 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:00:16 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,24 @@ void	render_background_top_bot(t_img *img)
 	{
 		x = 0;
 		while (x < WIDTH)
-		{
 			my_pixel_put(img, x++, y, 0xffffff);
-		}
 		++y;
 	}
 	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
-		{
 			my_pixel_put(img, x++, y, 0xff00ff);
-		}
 		++y;
 	}
 }
 
+int	get_pixel_color(t_tex *img, int x, int y)
+{
+	char	*pixel;
+
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return (-1);
+	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	return (*(int *)pixel);
+}

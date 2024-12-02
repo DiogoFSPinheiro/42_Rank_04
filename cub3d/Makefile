@@ -8,7 +8,7 @@ MINILXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11 -lbsd -no-pie -lm
 
 NAME = cub3d
 
-SRCS_D = main.c img_create.c events.c draw_shapes.c utils.c raycast.c
+SRCS_D = main.c img_create.c events.c draw_shapes.c utils.c raycast.c wall_and_textures.c line_algo.c clean_rotine.c utils2.c
 
 SRCS_P = 
 

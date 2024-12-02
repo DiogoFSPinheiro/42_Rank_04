@@ -6,12 +6,11 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:51:00 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/29 23:37:28 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:16:52 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 /**
  * raycaster - Casts rays to determine intersections with the map.
  *
@@ -25,230 +24,143 @@
  * - @ra: Ray angle (starts as the player's angle, varies per ray).
  * - @xo: X-offset for stepping to the next grid cell.
  * - @yo: Y-offset for stepping to the next grid cell.
- * - @atan:(aTan) Inverse of tangent (used for ray_h direction).
- * - @ntan:(nTan) Negative tangent (used for ray_v direction).
+ * - @atan: Inverse of tangent (used for ray_h direction).
+ * - @ntan: Negative tangent (used for ray_v direction).
  *
 **/
 
-void	ft_horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
-{
-	int mx, my, dof = 0;
-	float rx, ry, xo, yo, aTan;
+static void	ft_horizontal_init(t_mlx *win, t_h_inter *vars, float ra);
+static void	horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy);
+static void	ft_vertical_init(t_mlx *win, t_v_inter *vars, float ra);
+static void	vertical_intersection(t_mlx *win, float ra, float *vx, float *vy);
 
-	aTan = -1 / tan(ra);
+void	raycaster(t_mlx *win)
+{
+	t_ray_vars	vars;
+
+	ft_init_vars(&vars, win);
+	while (++vars.r < WIDTH && ft_circle_normalizer(&vars.ra) == SUCCESS)
+	{
+		horizontal_intersection(win, vars.ra, &vars.hx, &vars.hy);
+		vertical_intersection(win, vars.ra, &vars.vx, &vars.vy);
+		vars.ray_h = line_length(win->player->x, win->player->y,
+				vars.hx, vars.hy);
+		vars.ray_v = line_length(win->player->x, win->player->y,
+				vars.vx, vars.vy);
+		if (vars.ray_h < vars.ray_v)
+		{
+			ft_texture_picker(win, vars.hy, 'h');
+			ft_value_setter(&vars.wall_x, &vars.hx, &vars.line, &vars.ray_h);
+		}
+		else
+		{
+			ft_texture_picker(win, vars.vx, 'v');
+			ft_value_setter(&vars.wall_x, &vars.vy, &vars.line, &vars.ray_v);
+		}
+		vars.line = vars.line * cos(win->player->player_angle - vars.ra);
+		draw_3d_walls(win, vars.line, vars.r, vars.wall_x);
+		vars.ra += DR;
+	}
+}
+
+static void	ft_horizontal_init(t_mlx *win, t_h_inter *vars, float ra)
+{
+	vars->atan = -1 / tan(ra);
+	vars->dof = 0;
 	if (ra > PI)
 	{
-		ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
-		rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-		yo = -SQUARE_SIZE;
-		xo = -yo * aTan;
+		vars->ry = (((int)win->player->y / SQUARE) * SQUARE) - 0.0001;
+		vars->rx = (win->player->y - vars->ry) * vars->atan + win->player->x;
+		vars->yo = -SQUARE;
+		vars->xo = -vars->yo * vars->atan;
 	}
 	else if (ra < PI)
 	{
-		ry = (((int)win->player->player_y / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
-		rx = (win->player->player_y - ry) * aTan + win->player->player_x;
-		yo = SQUARE_SIZE;
-		xo = -yo * aTan;
+		vars->ry = (((int)win->player->y / SQUARE) * SQUARE) + SQUARE;
+		vars->rx = (win->player->y - vars->ry) * vars->atan + win->player->x;
+		vars->yo = SQUARE;
+		vars->xo = -vars->yo * vars->atan;
 	}
 	else if (ra == 0 || ra == PI)
 	{
-		rx = win->player->player_x;
-		ry = win->player->player_y;
-		dof = 20;
+		vars->rx = win->player->x;
+		vars->ry = win->player->y;
+		vars->dof = 20;
 	}
-	while (dof < 20)
+}
+
+static void	horizontal_intersection(t_mlx *win, float ra, float *hx, float *hy)
+{
+	t_h_inter	vars;
+
+	ft_horizontal_init(win, &vars, ra);
+	while (vars.dof < 20)
 	{
-		mx = (int)(rx / SQUARE_SIZE);
-		my = (int)(ry / SQUARE_SIZE);
-
-		if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+		vars.mx = (int)(vars.rx / SQUARE);
+		vars.my = (int)(vars.ry / SQUARE);
+		if (vars.mx < 0 || vars.mx >= win->map->width
+			|| vars.my < 0 || vars.my >= win->map->height)
 			break ;
-
-		if (win->map->coord[my][mx] == '1')
+		if (win->map->coord[vars.my][vars.mx] == '1')
 			break ;
 		else
 		{
-			rx += xo;
-			ry += yo;
-			dof++;
+			vars.rx += vars.xo;
+			vars.ry += vars.yo;
+			vars.dof++;
 		}
 	}
-	*hx = rx;
-	*hy = ry;
+	*hx = vars.rx;
+	*hy = vars.ry;
 }
 
-void	ft_vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
+static void	ft_vertical_init(t_mlx *win, t_v_inter *vars, float ra)
 {
-	int mx, my, dof = 0;
-	float rx, ry, xo, yo, nTan;
-
-	nTan = -tan(ra);
+	vars->ntan = -tan(ra);
+	vars->dof = 0;
 	if (ra > P2 && ra < P3)
 	{
-		rx = (((int)win->player->player_x / SQUARE_SIZE) * SQUARE_SIZE) - 0.0001;
-		ry = (win->player->player_x - rx) * nTan + win->player->player_y;
-		xo = -SQUARE_SIZE;
-		yo = -xo * nTan;
+		vars->rx = (((int)win->player->x / SQUARE) * SQUARE) - 0.0001;
+		vars->ry = (win->player->x - vars->rx) * vars->ntan + win->player->y;
+		vars->xo = -SQUARE;
+		vars->yo = -vars->xo * vars->ntan;
 	}
 	else if (ra < P2 || ra > P3)
 	{
-		rx = (((int)win->player->player_x / SQUARE_SIZE) * SQUARE_SIZE) + SQUARE_SIZE;
-		ry = (win->player->player_x - rx) * nTan + win->player->player_y;
-		xo = SQUARE_SIZE;
-		yo = -xo * nTan;
+		vars->rx = (((int)win->player->x / SQUARE) * SQUARE) + SQUARE;
+		vars->ry = (win->player->x - vars->rx) * vars->ntan + win->player->y;
+		vars->xo = SQUARE;
+		vars->yo = -vars->xo * vars->ntan;
 	}
 	else if (ra == 0 || ra == PI)
 	{
-		rx = win->player->player_x;
-		ry = win->player->player_y;
-		dof = 20;
+		vars->rx = win->player->x;
+		vars->ry = win->player->y;
+		vars->dof = 20;
 	}
-	while (dof < 20)
+}
+
+static void	vertical_intersection(t_mlx *win, float ra, float *vx, float *vy)
+{
+	t_v_inter	vars;
+
+	ft_vertical_init(win, &vars, ra);
+	while (vars.dof < 20)
 	{
-		mx = (int)(rx / SQUARE_SIZE);
-		my = (int)(ry / SQUARE_SIZE);
-
-		if (mx < 0 || mx >= win->map->width || my < 0 || my >= win->map->height)
+		vars.mx = (int)(vars.rx / SQUARE);
+		vars.my = (int)(vars.ry / SQUARE);
+		if (vars.mx < 0 || vars.mx >= win->map->width
+			|| vars.my < 0 || vars.my >= win->map->height)
 			break ;
-
-		if (win->map->coord[my][mx] == '1')
+		if (win->map->coord[vars.my][vars.mx] == '1')
 			break ;
 		else
 		{
-			rx += xo;
-			ry += yo;
-			dof++;
+			vars.rx += vars.xo;
+			vars.ry += vars.yo;
+			vars.dof++;
 		}
 	}
-	*vx = rx;
-	*vy = ry;
+	*vx = vars.rx;
+	*vy = vars.ry;
 }
-
-void	ft_texture_setter(t_mlx *win, t_tex *texture_to_use, float *tx)
-{
-	if (win->texture_nbr == 0)
-	{
-		*texture_to_use = win->north_texture;
-		*tx = 63 - *tx;
-	}
-	else if (win->texture_nbr == 1)
-		*texture_to_use = win->south_texture;
-	else if (win->texture_nbr == 2)
-		*texture_to_use = win->west_texture;
-	else if (win->texture_nbr == 3)
-	{
-		*texture_to_use = win->east_texture;
-		*tx = 63 - *tx;
-	}
-}
-
-void	ft_vertical_line(t_mlx *win, int x, int start, int end, int color)
-{
-	int y;
-
-	y = start;
-	while (y < end)
-	{
-		mlx_pixel_put(win->mlx_connect, win->mlx_win, x, y, color);
-		y++;
-	}
-}
-
-void	ft_wall_limits(int *line_h, float *ty_offset)
-{
-	if (*line_h > HEIGHT)
-	{
-		*ty_offset = ((float)*line_h - HEIGHT) / 2;
-		*line_h = HEIGHT;
-	}
-}
-
-void	draw_3d_walls(t_mlx *win, float distance, int column, float hx)
-{
-	int	line_h;
-	int	line_start;
-	t_tex texture_to_use;
-	t_texture_vars vars;
-	
-	line_h = (SQUARE_SIZE * HEIGHT) / distance;
-	vars.ty_step = 64 / (float)line_h;
-	vars.ty_offset = 0;
-	ft_wall_limits(&line_h, &vars.ty_offset);
-	line_start = (HEIGHT / 2) - (line_h / 2);
-	vars.y = -1;
-	vars.ty = vars.ty_step * vars.ty_offset;
-	vars.tx = (int)(hx) % 64;
-	ft_texture_setter(win, &texture_to_use, &vars.tx);
-	while (++vars.y < line_h)
-	{
-		my_pixel_put(&win->img, column, line_start + vars.y, get_pixel_color(&texture_to_use,
-			((int)vars.tx) % SQUARE_SIZE, (int)(vars.ty)));
-		vars.ty += vars.ty_step;
-	}
-}
-
-/*
-*	the horizontal lines tell north from south
-*	the vertical lines tell east from west
-*
-*	the directions are inverted
-*	South -> North
-*	North -> South
-*	etc etc
-*
-*/
-void	ft_texture_picker(t_mlx *win, float ray_point, char c)
-{
-	if (c == 'h')
-	{
-		if (ray_point > win->player->player_y) // South wall 
-			win->texture_nbr = 0;
-		else // North wall
-			win->texture_nbr = 1;
-	}
-	else
-	{
-		if (ray_point > win->player->player_x) // East wall 
-			win->texture_nbr = 2;
-		else // West wall 
-			win->texture_nbr = 3;
-	}
-}
-
-void	ft_value_setter(float *val1, float *set1, float *val2, float *set2)
-{
-	*val1 = *set1;
-	*val2 = *set2;
-}
-
-void	raycaster(t_mlx *win)// TODO place the vals in a struct
-{
-	int		r;
-	float	hx, hy, vx, vy, ray_h, ray_v, line, ra, wall_x;
-
-	r = -1;
-	ra = win->player->player_angle - (FOV / 2);
-	while (++r < WIDTH && ft_circle_normalizer(&ra) == SUCCESS)
-	{
-		ft_horizontal_intersection(win, ra, &hx, &hy);
-		ft_vertical_intersection(win, ra, &vx, &vy);
-		ray_h = line_length(win->player->player_x, win->player->player_y, hx, hy);
-		ray_v = line_length(win->player->player_x, win->player->player_y, vx, vy);
-		if (ray_h < ray_v)
-		{
-			ft_texture_picker(win, hy, 'h');
-			ft_value_setter(&wall_x, &hx, &line, &ray_h);
-		}
-		else
-		{
-			ft_texture_picker(win, vx, 'v');
-			ft_value_setter(&wall_x, &vy, &line, &ray_v);
-		}
-		line = line * cos(win->player->player_angle - ra);
-		draw_3d_walls(win, line, r, wall_x);
-		ra += DR;
-	}
-}
-
-
-

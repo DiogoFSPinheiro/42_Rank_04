@@ -402,3 +402,61 @@ void    raycaster(t_mlx *win)
 	}
 }
 */
+//				colisions
+/*
+int	check_collision_x(t_mlx *mlx, int pos_x, int pos_y, int direction)
+{
+	int	x;
+	int	y;
+
+	if (direction == XK_Right)
+	{
+		x = pos_x + PLAYER_SIZE + 1;
+		y = pos_y;
+		while (y < pos_y + PLAYER_SIZE)
+		{
+			if (get_pixel_color(&mlx->img, x, y++) == OBSTACLE_COLOR)
+				return (FAILURE);
+		}
+	}
+	else if (direction == XK_Left)
+	{
+		x = pos_x - 1;
+		y = pos_y;
+		while (y < pos_y + PLAYER_SIZE)
+		{
+			if (get_pixel_color(&mlx->img, x, y++) == OBSTACLE_COLOR)
+				return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
+
+int	check_collision_y(t_mlx *mlx, int pos_x, int pos_y, int direction)
+{
+	int	x;
+	int	y;
+
+	if (direction == XK_Up)
+	{
+		x = pos_x;
+		y = pos_y - 1;
+		while (x < pos_x + PLAYER_SIZE)
+		{
+			if (get_pixel_color(&mlx->img, x++, y) == OBSTACLE_COLOR)
+				return (FAILURE);
+		}
+	}
+	else if (direction == XK_Down)
+	{
+		x = pos_x;
+		y = pos_y + PLAYER_SIZE + 1;
+		while (x < pos_x + PLAYER_SIZE)
+		{
+			if (get_pixel_color(&mlx->img, x++, y) == OBSTACLE_COLOR)
+				return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
+*/

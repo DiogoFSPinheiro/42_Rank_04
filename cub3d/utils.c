@@ -6,12 +6,11 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/11/29 23:27:51 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:23:50 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "libraries/libft/libft.h"
 
 int	ft_mod(int n)
 {
@@ -54,12 +53,18 @@ void	set_up_win(t_mlx *win, char **map)
 	win->map->height = 10;
 	win->map->width = ft_strlen(map[0]);
 	win->player->player_angle = 0;
-	win->player->player_delta_x = cos(win->player->player_angle) * 5;
-	win->player->player_delta_y = sin(win->player->player_angle) * 5;
+	win->player->player_delta_x = cos(win->player->player_angle) * 7;
+	win->player->player_delta_y = sin(win->player->player_angle) * 7;
 	win->map->coord = ft_calloc(win->map->height, sizeof(char *));
 	while (y < win->map->height)
 	{
 		win->map->coord[y] = ft_strdup(map[y]);
 		y++;
 	}
+}
+
+void	ft_value_setter(float *val1, float *set1, float *val2, float *set2)
+{
+	*val1 = *set1;
+	*val2 = *set2;
 }
