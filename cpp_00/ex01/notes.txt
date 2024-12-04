@@ -1,0 +1,14 @@
+hpp
+
+colocas a designaçºao da classe mais funções que exitem nela
+e como se fosse um header
+
+cpp
+
+colocas as funcoes como se fosse um .c normal
+
+cada classe tem 2 docs desses, depois arrancas com o codigo
+
+imprimir
+
+std::cout << "name" << first_name << std::endl;
