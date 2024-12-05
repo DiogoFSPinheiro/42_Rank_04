@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:22:17 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/05 14:43:19 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/05 22:32:22 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void Contact::print_contactInfo()
 {
-	std::cout << "First Name     " << first_name << std::endl;
-	std::cout << "Last Name      " << last_name << std::endl;
-	std::cout << "Phone Number   " << number << std::endl;
-	std::cout << "Nick Name      " << nickname << std::endl;
-	std::cout << "Darkest Secret " << darkest_secret << std::endl;
+	std::cout << "First Name      " << first_name << std::endl;
+	std::cout << "Last Name       " << last_name << std::endl;
+	std::cout << "Phone Number    " << number << std::endl;
+	std::cout << "Nick Name       " << nickname << std::endl;
+	std::cout << "Darkest Secret  " << darkest_secret << std::endl;
+    std::cout << std::endl;
 
 }
 

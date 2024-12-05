@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:45:18 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/05 18:31:13 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/05 23:14:29 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 #include <iostream>
 #include <cctype>
+#include <iomanip>
+#include <limits.h>
+
+#include <string>
+#include <cstdlib>
+#include <limits>
+
 #include "Contact.hpp"
 
 class Phonebook{
@@ -22,11 +29,15 @@ class Phonebook{
 	private:
 		Contact contacts[8];
 		int		current_contacts;
+		int		nbr_contacts;
 
     public:
 		Phonebook() : current_contacts(0) {}
-		void	add_contact(int index);
+		bool	add_contact(int index);
 		void	print_contacts();
+		void	print_single_contact(int index);
+		void	fill_contacts_tester();
+		bool	check_field(std::string field);
 		
 };
 

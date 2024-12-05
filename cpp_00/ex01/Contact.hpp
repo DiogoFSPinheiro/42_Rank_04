@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:22:14 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/05 18:05:30 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/05 22:31:00 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define CONTACT_HPP
 #include <iostream>
 #include <cctype>
+#include <iomanip>
 
 
 class Contact{
