@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:56:41 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/02 13:12:07 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:22:56 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ typedef struct s_mlx
 	t_tex		east_texture;
 	t_tex		south_texture;
 	t_tex		west_texture;
+	int			color_top;
+	int			color_bot;
 	int			texture_nbr;
 }	t_mlx;
 
@@ -159,7 +161,7 @@ int		main(void);
 
 void	my_pixel_put(t_img *img, int x, int y, int color);
 void	render_background(t_img *img, int color);
-void	render_background_top_bot(t_img *img);
+void	render_background_top_bot(t_mlx *win, t_img *img);
 int		get_pixel_color(t_tex *img, int x, int y);
 
 // --------------- events.c --------------------- //

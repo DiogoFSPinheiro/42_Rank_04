@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:56:01 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/02 18:36:07 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:30:18 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ int	draw(t_mlx *win)
 {
 	render_background(&win->img, 0xD3D3D3);
 	ft_draw_map(win->map, &win->img, win);
-	ft_update_player(win->player->x, win->player->y,
-		&win->img, win);
-	ft_vision_angle(win, win->player->x, win->player->y);
-	render_background_top_bot(&win->img);
+	render_background_top_bot(win, &win->img);
 	raycaster(win);
+	ft_draw_mini_map(win->map, &win->img, -1, -1);
+	ft_update_player((win->player->x / SQUARE) * SQUARE_MINI,
+		(win->player->y / SQUARE) * SQUARE_MINI, &win->img, win);
 	mlx_put_image_to_window(win->mlx_connect, win->mlx_win,
 		win->img.mlx_img, 0, 0);
 	return (0);
 }
 
 //TODO ver com o Paulo para dar merge antes de dar Norm
-void	render(t_mlx *win) //render(char **map)
+void	render(t_mlx *win)
 {
 	win->mlx_connect = mlx_init();
 	win->mlx_win = mlx_new_window(win->mlx_connect, WIDTH, HEIGHT, "Cub3D");

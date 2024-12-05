@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 NAME = PhoneBook
 
-SRCS = Contact.cpp main.cpp
+SRCS = Contact.cpp main.cpp PhoneBook.cpp
 
 GREEN		= \033[38;5;47m
 YELLOW		= \033[38;5;226m

@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:47:44 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:53:14 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:26:13 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	set_up_win(t_mlx *win, char **map)
 	int	y;
 
 	y = 0;
+	win->color_top = 0xADD8E6;
+	win->color_bot = 0xdddddd;
 	win->mlx_connect = 0;
 	win->mlx_win = 0;
 	win->map = 0;
