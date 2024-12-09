@@ -6,76 +6,93 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:47:11 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/05 23:26:30 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:21:01 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 #include "Contact.hpp"
-#include <cstddef>
+#include <cctype>
 
 
-bool Phonebook::add_contact(int index)
+
+int Phonebook::add_contact(int index)
 {
 	index = current_contacts % 8;
 	
 	std::string first_name;
 	std::cout << "ADD First Name " ;
 	std::getline(std::cin, first_name);
-	if (check_field(first_name) == true)
+	if (check_field(first_name, 0) == true)
 		return false;
 	
 	std::string last_name;
 	std::cout << "ADD Last Name  " ;
 	std::getline(std::cin, last_name);
-	if (check_field(last_name) == true)
+	if (check_field(last_name, 0) == true)
 		return false;
 	
 	std::string nickname;
-	std::cout << "ADD Nickname  " ;
+	std::cout << "ADD Nickname   " ;
 	std::getline(std::cin, nickname);
-	if (check_field(nickname) == true)
+	if (check_field(nickname, 0) == true)
 		return false;
 	
 	std::string darkest_secret;
 	std::cout << "ADD Secret     " ;
 	std::getline(std::cin, darkest_secret);
-	if (check_field(darkest_secret) == true)
+	if (check_field(darkest_secret,0) == true)
 		return false;
 	
 	std::string number;
 	std::cout << "ADD Number     " ;
 	std::getline(std::cin, number);
-	if (check_field(number) == true)
+	if (check_field(number, 1) == true)
 		return false;
 	
 	contacts[index].fill_contact(first_name, last_name, nickname, darkest_secret, number, index);
-	if (current_contacts < 8)
-		current_contacts++;
+	current_contacts++;
 	return true;
 }
 
-bool Phonebook::check_field(std::string field)
+bool Phonebook::check_field(std::string field, int nbr)
 {
+	
+	unsigned long n = -1;
+	while(nbr > 0 && field.size() > ++n)
+	{
+		if(!isdigit(field[n]))
+		{
+			std::cout << "A Phone Number mustn't have letters in it" << std::endl;
+			return true;
+		}
+	}
+	
 	if (std::cin.eof() || std::cin.fail())
     {
 		std::cin.clear();
-        std::cout << "\nInput interrupted. Returning to main menu...\n";
+        std::cout << "\nInput interrupted. Ending program..." << std::endl;
         return true;
     }
 	
-	if (field.empty())
+	if (field.find_first_not_of(' ') || field.find_first_not_of('	'))
 	{
 		std::cout << "You must fill all fields! Aborting..." << std::endl;
 		return true;
 	}
+	
 	return false;
 }
 
-void Phonebook::print_contacts()
+bool Phonebook::print_contacts()
 {
     int i = -1;
-	
+	if (current_contacts == 0)
+	{
+		std::cout << "No contacts yet in the PhoneBook" << std::endl;
+		return false;
+	}
+		
 	std::cout << std::setw(10) << "Index" << " | "
               << std::setw(10) << "First Name" << " | "
               << std::setw(10) << "Last Name" << " | "
@@ -90,16 +107,19 @@ void Phonebook::print_contacts()
 				  
     }
 	std::cout << std::endl;
+	return true;
 
 }
 
 
-void	Phonebook::print_single_contact(int index)
+bool	Phonebook::print_single_contact(int index)
 {
-	if (index > 0 && index <= current_contacts)
+	if (index > 0 && index <= 8 && current_contacts >= index)
+	{
 		contacts[index-1].print_contactInfo();
-	else
-		std::cout << "Wrong index number" << std::endl;
+		return true;
+	}
+	return false;
 }
 
 void	Phonebook::fill_contacts_tester()
