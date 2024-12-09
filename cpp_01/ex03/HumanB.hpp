@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:48:32 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/09 19:03:04 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:30:56 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class HumanB{
     public:
 		HumanB(const std::string name);
 		HumanB(const std::string name, Weapon *weapon);
-		void	set_weapon(Weapon *weapon);
+		void	setWeapon(Weapon& weapon);
 		void	attack();
 		
 };

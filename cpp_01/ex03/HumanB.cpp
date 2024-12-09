@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:48:36 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/09 19:03:00 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:35:47 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@ HumanB::HumanB(const std::string name, Weapon *weapon)
 
 void	HumanB::attack()
 {
-	std::cout << _name << " attacked with " << _weapon->getType() << " outch!!" << std::endl;
+	if (_weapon)
+		std::cout << _name << " attacks with their " << _weapon->getType() << " outch!!" << std::endl;
+	else
+		std::cout << _name << " attacks with their ... no weapon?" << " damn..." << std::endl;
 }
 
-void	set_weapon(Weapon *weapon)
+void	HumanB::setWeapon(Weapon &weapon)
 {
-	_weapon = weapon;
+	_weapon = &weapon;
 }
