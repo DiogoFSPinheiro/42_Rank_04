@@ -6,16 +6,14 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:18:39 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/09 22:40:38 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:27:03 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ostream>
+
 #include <string>
 #include <iostream>
-
 #include <fstream>
-#include <sstream>
 
 void	replaceStringsInFile(const std::string& filename, const std::string& s1, const std::string& s2)
 {
@@ -54,11 +52,12 @@ void	replaceStringsInFile(const std::string& filename, const std::string& s1, co
 			pos += s2.size();
 			pos = line.find(s1, pos);
 		}
-		outputFile << line << '\n';
+		outputFile << line;
+		if (inputFile.peek() != EOF)
+			outputFile << '\n';
 	}
-	
 	outputFile.close();
-    inputFile.close();
+	inputFile.close();
     std::cout << "Processing complete: " << filename + ".replace" << std::endl;
 }
 

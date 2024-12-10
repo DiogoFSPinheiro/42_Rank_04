@@ -6,12 +6,13 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:22:21 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/09 14:12:22 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:56:00 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Contact.hpp"
 #include "PhoneBook.hpp"
+#include <cstdio>
 #include <string>
 #include <cstdlib>
 
@@ -58,7 +59,7 @@ int main()
 				}
 			}
 		}
-		else if (command == "EXIT"|| command == "\0")
+		else if (command == "EXIT"|| std::cin.eof())
 		{
 			std::cout << "Ok time to go, bye!!" << std::endl;
 			break;
