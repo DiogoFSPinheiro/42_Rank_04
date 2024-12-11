@@ -23,6 +23,7 @@
 
 #include <string>
 #include <iostream>
+#include <cmath>
 
 class Fixed{
 
@@ -38,12 +39,12 @@ class Fixed{
 		~Fixed();
 		Fixed& operator=(const Fixed& other);
 
+		int toInt(void) const;
+		float toFloat(void) const;
 
 };
 
-
-
-
+std::ostream& operator<<(std::ostream& output, const Fixed& other);
 
 
 #endif
