@@ -21,7 +21,6 @@
 #define cyan "\033[36m"
 #define reset "\033[0m"
 
-#include <string>
 #include <iostream>
 #include <cmath>
 
@@ -70,9 +69,6 @@ class Fixed{
 		static const Fixed& min(const Fixed& a, const Fixed& b);
 		static Fixed& max(Fixed& a, Fixed& b);
 		static const Fixed& max(const Fixed& a, const Fixed& b);
-
-
-
 };
 
 std::ostream& operator<<(std::ostream& output, const Fixed& other);

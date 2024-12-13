@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:36:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/12 17:40:46 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:02:37 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ Fixed::Fixed()
 	_fixed_point = 0;
 	//std::cout << "Default constructor called" << std::endl;
 }
-
-
 
 Fixed::Fixed(const Fixed& other)
 {
@@ -36,8 +34,7 @@ int Fixed::getRawBits( void ) const
 	//std::cout << "function getRawBits used" << std::endl;
 	return this->_fixed_point;
 }
-		
-		
+	
 void Fixed::setRawBits( int const raw )
 {
 	//std::cout << "function getRawBits used" << std::endl;
@@ -73,12 +70,10 @@ float Fixed::toFloat(void) const
     return (float)this->_fixed_point / (1 << _fracBits);
 }
 
-
 int Fixed::toInt(void) const
 {
     return this->_fixed_point / (1 << _fracBits);
 }
-
 
 std::ostream& operator<<(std::ostream& output, const Fixed& other)
 {
@@ -88,8 +83,6 @@ std::ostream& operator<<(std::ostream& output, const Fixed& other)
 
 //-------------------------------------------------
 	// Comparors
-
-
 
 bool Fixed::operator>(const Fixed& other) const {
     return this->_fixed_point > other._fixed_point;
@@ -146,6 +139,11 @@ Fixed& Fixed::operator++() {
     return *this;
 }
 
+Fixed& Fixed::operator--() {
+    this->_fixed_point -= 1;
+    return *this;
+}
+
 Fixed Fixed::operator--(int) {
     Fixed temp = *this;
     this->_fixed_point -= 1;
@@ -157,13 +155,6 @@ Fixed Fixed::operator++(int) {
     this->_fixed_point += 1;
     return temp;
 }
-
-Fixed& Fixed::operator--() {
-    this->_fixed_point -= 1;
-    return *this;
-}
-
-
 
 //-------------------------------------------------
 
@@ -184,4 +175,3 @@ Fixed& Fixed::max(Fixed& a, Fixed& b) {
 const Fixed& Fixed::max(const Fixed& a, const Fixed& b) {
     return (a > b) ? a : b;
 }
-
