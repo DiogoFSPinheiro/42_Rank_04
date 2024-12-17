@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Fixed.hpp                                         :+:      :+:    :+:   */
+/*   ClapTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:23:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/09 16:15:15 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:47:15 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FIXED_HPP
-#define FIXED_HPP
+#ifndef CLAPTRAP_HPP
+#define CLAPTRAP_HPP
 
 #define blue "\033[34m"
 #define red "\033[31m"
@@ -24,20 +24,29 @@
 #include <string>
 #include <iostream>
 
-class Fixed{
+class ClapTrap{
 
 	private:
-		int _fixed_point;
-		static const int _fracBits = 8;
+		std::string _name;
+		int 		_hitPoints;
+		int			_energyPoints;
+		int			_attackDamage;
 
     public:
-		Fixed();
-		Fixed(const Fixed& other);
-		~Fixed();
-		Fixed& operator=(const Fixed& other);
+		ClapTrap();
+		ClapTrap(const std::string name);
+		ClapTrap(const ClapTrap& other);
+		ClapTrap& operator=(const ClapTrap& other);
+		~ClapTrap();
 
-		int getRawBits(void )const;
-		void setRawBits(int const raw);
+		std::string getName();
+		void depleteEnergy(unsigned int amount);
+
+		void attack(const std::string& target);
+		void takeDamage(unsigned int amount);
+		void beRepaired(unsigned int amount);
+
+
 };
 
 
