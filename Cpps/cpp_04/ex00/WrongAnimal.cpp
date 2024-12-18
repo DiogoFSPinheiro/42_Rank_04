@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.cpp                                          :+:      :+:    :+:   */
+/*   WrongAnimal.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cat.hpp"
+#include "WrongAnimal.hpp"
 #include <cstdio>
 
-Cat::Cat()
+WrongAnimal::WrongAnimal()
 {
-	_type = "Cat";
-	std::cout << "CAT: Default constructor called!" << std::endl;
+	_type = "Unknown";
+
+	std::cout << "WRONGANIMAL: Default constructor called!" << std::endl;
 }
 
-Cat::Cat(const Cat& other)
+WrongAnimal::WrongAnimal(const WrongAnimal& other)
 {
-	std::cout << "CAT: Copy constructor called!" << std::endl;
+	std::cout << "WRONGANIMAL: Copy constructor called!" << std::endl;
 	*this = other;
 }
-Cat::~Cat()
+WrongAnimal::~WrongAnimal()
 {
-	std::cout << "CAT: Destructor for " << this->_type << " was called!" << std::endl;
+	std::cout << "WRONGANIMAL: Destructor for " << this->_type << " was called!" << std::endl;
 }
 
-Cat &Cat::operator=(const Cat& other)
+WrongAnimal &WrongAnimal::operator=(const WrongAnimal& other)
 {
-	std::cout << "CAT: Assigment constructor for was called!" << std::endl;
+	std::cout << "WRONGANIMAL: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
 	{
 		_type = other._type;
@@ -39,8 +40,13 @@ Cat &Cat::operator=(const Cat& other)
 	return *this;
 }
 
-void Cat::makeSound() const
+void WrongAnimal::makeSound() const
 {
-	std::cout << "miaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaau" <<  std::endl;
+	std::cout << "WrongAnimal sound!!" << std::endl;
+}
+
+std::string WrongAnimal::getType()
+{
+	return _type;
 }
 

@@ -2,11 +2,11 @@ MAKEFLAGS += -s
 
 CC = c++ 
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -std=c++98 #-Wall -Wextra -Werror -std=c++98
 
 NAME = Animal
 
-SRCS = main.cpp Animal.cpp Dog.cpp Cat.cpp
+SRCS = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp 
 
 GREEN		= \033[38;5;47m
 YELLOW		= \033[38;5;226m

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.cpp                                          :+:      :+:    :+:   */
+/*   WrongCat.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cat.hpp"
+#include "WrongCat.hpp"
 #include <cstdio>
 
-Cat::Cat()
+WrongCat::WrongCat()
 {
-	_type = "Cat";
-	std::cout << "CAT: Default constructor called!" << std::endl;
+	_type = "WrongCat";
+	std::cout << "WRONGCAT: Default constructor called!" << std::endl;
 }
 
-Cat::Cat(const Cat& other)
+WrongCat::WrongCat(const WrongCat& other)
 {
-	std::cout << "CAT: Copy constructor called!" << std::endl;
+	std::cout << "WRONGCAT: Copy constructor called!" << std::endl;
 	*this = other;
 }
-Cat::~Cat()
+WrongCat::~WrongCat()
 {
-	std::cout << "CAT: Destructor for " << this->_type << " was called!" << std::endl;
+	std::cout << "WRONGCAT: Destructor for " << this->_type << " was called!" << std::endl;
 }
 
-Cat &Cat::operator=(const Cat& other)
+WrongCat &WrongCat::operator=(const WrongCat& other)
 {
-	std::cout << "CAT: Assigment constructor for was called!" << std::endl;
+	std::cout << "WRONGCAT: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
 	{
 		_type = other._type;
@@ -39,8 +39,8 @@ Cat &Cat::operator=(const Cat& other)
 	return *this;
 }
 
-void Cat::makeSound() const
+void WrongCat::makeSound() const
 {
-	std::cout << "miaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaau" <<  std::endl;
+	std::cout << "Wrong miau" << std::endl;
 }
 
