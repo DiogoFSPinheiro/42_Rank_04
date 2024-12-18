@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClapTrap.hpp                                       :+:      :+:    :+:   */
+/*   ClapTrap.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:23:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/17 18:47:15 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:15:15 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 class ClapTrap{
 
-	private:
+	protected:
 		std::string _name;
 		int 		_hitPoints;
 		int			_energyPoints;
@@ -36,17 +36,17 @@ class ClapTrap{
 		ClapTrap();
 		ClapTrap(const std::string name);
 		ClapTrap(const ClapTrap& other);
-		ClapTrap& operator=(const ClapTrap& other);
+		ClapTrap &operator=(const ClapTrap& other);
 		~ClapTrap();
 
 		std::string getName();
-		void depleteEnergy(unsigned int amount);
+		void 	depleteEnergy(int amount);
+		int		getHp();
+		int getEnergyPoints() const;
 
 		void attack(const std::string& target);
 		void takeDamage(unsigned int amount);
 		void beRepaired(unsigned int amount);
-
-
 };
 
 

@@ -6,32 +6,35 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:18:39 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/17 18:39:02 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:02:40 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ClapTrap.hpp"
+#include "Animal.hpp"
+#include "Cat.hpp"
+#include "Dog.hpp"
 #include <iostream>
 #include <ostream>
 
-int main(void)
+int main()
 {
-	ClapTrap a;
-	ClapTrap b("Gabriel");
-	ClapTrap c;
-	c = b;
-	
-	a.getName();
-	b.getName();
-	c.getName();
-
+	Animal whut;
 	std::cout << std::endl;
-	a.attack(b.getName());
-	a.takeDamage(10);
-	a.beRepaired(10);
-	a.depleteEnergy(9);
-	a.attack(b.getName());
-	a.beRepaired(10);
+	Animal damn(whut);
+	std::cout << std::endl;
+	Animal shit;
+	shit = whut;
+	std::cout << std::endl;
+
+	Cat catito;
+	std::cout << "The " << catito.getType()<< " makes: "; catito.makeSound();
+	std::cout << std::endl;
+
+	Dog dogito;
+	std::cout << "The " << dogito.getType()<< " makes: "; dogito.makeSound();
+	std::cout << std::endl;
+
 	
-	return 0;
+
+    return 0;
 }

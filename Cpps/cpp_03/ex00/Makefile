@@ -47,6 +47,10 @@ $(NAME) : $(OBJS)
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
+run:
+	make 
+	./ClapTrap
+
 clean:
 	rm -rf $(OBJS) 
 	@echo "$(YELLOW)Removing $(NAME) objects files$(RESET)" 

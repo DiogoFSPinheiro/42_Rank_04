@@ -4,9 +4,9 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-NAME = ClapTrap
+NAME = ScavTrap
 
-SRCS = main.cpp ClapTrap.cpp
+SRCS = main.cpp ClapTrap.cpp ScavTrap.cpp
 
 GREEN		= \033[38;5;47m
 YELLOW		= \033[38;5;226m
@@ -46,6 +46,10 @@ $(NAME) : $(OBJS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
+
+run:
+	make 
+	./ScavTrap
 
 clean:
 	rm -rf $(OBJS) 
