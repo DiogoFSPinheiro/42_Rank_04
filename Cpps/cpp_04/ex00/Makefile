@@ -48,7 +48,7 @@ $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run:
-	make 
+	make re
 	./Animal
 
 clean:

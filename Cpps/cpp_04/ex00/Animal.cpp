@@ -15,8 +15,7 @@
 
 Animal::Animal()
 {
-	_type = "Unknown";
-
+	_type = "Animal";
 	std::cout << "ANIMAL: Default constructor called!" << std::endl;
 }
 
@@ -42,10 +41,10 @@ Animal &Animal::operator=(const Animal& other)
 
 void Animal::makeSound() const
 {
-	;
+	std::cout << "Some generic animal sound!" << std::endl;;
 }
 
-std::string Animal::getType()
+std::string Animal::getType() const
 {
 	return _type;
 }

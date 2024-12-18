@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:23:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/18 18:56:26 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:43:01 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,10 @@ class Animal{
 		Animal();
 		Animal(const Animal& other);
 		Animal &operator=(const Animal& other);
-		~Animal();
+		virtual ~Animal();
 		
 		virtual void makeSound() const;
-
-		std::string getType();
+		virtual std::string getType() const;
 };
 
 
