@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                          :+:      :+:    :+:   */
+/*   WrongCat.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,40 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "WrongCat.hpp"
 #include <cstdio>
 
-Animal::Animal()
+WrongCat::WrongCat()
 {
-	_type = "Animal";
-	std::cout << "ANIMAL: Default constructor called!" << std::endl;
+	_type = "WrongCat";
+	std::cout << "WRONGCAT: Default constructor called!" << std::endl;
 }
 
-Animal::Animal(const Animal& other)
+WrongCat::WrongCat(const WrongCat& other)
 {
-	std::cout << "ANIMAL: Copy constructor called!" << std::endl;
+	std::cout << "WRONGCAT: Copy constructor called!" << std::endl;
 	*this = other;
 }
-Animal::~Animal()
+WrongCat::~WrongCat()
 {
-	std::cout << "ANIMAL: Destructor for " << this->_type << " was called!" << std::endl;
+	std::cout << "WRONGCAT: Destructor for " << this->_type << " was called!" << std::endl;
 }
 
-Animal &Animal::operator=(const Animal& other)
+WrongCat &WrongCat::operator=(const WrongCat& other)
 {
-	std::cout << "ANIMAL: Assigment constructor for was called!" << std::endl;
+	std::cout << "WRONGCAT: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
+	{
 		_type = other._type;
+	}
 	return *this;
 }
 
-void Animal::makeSound() const
+void WrongCat::makeSound() const
 {
-	std::cout << "Some generic animal sound!" << std::endl;;
-}
-
-std::string Animal::getType() const
-{
-	return _type;
+	std::cout << "Wrong miau" << std::endl;
 }
 

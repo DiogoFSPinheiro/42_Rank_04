@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:18:39 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/18 22:45:28 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:37:19 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ int main()
 		std::cout << j->getType() << " " << std::endl;
 		std::cout << i->getType() << " " << std::endl;
 		std::cout << std::endl;
-		i->makeSound();
+		
 		j->makeSound();
+		i->makeSound();
 		meta->makeSound();
+		
 		std::cout << std::endl;
 		delete meta;
-		delete j;
 		delete i;
+		delete j;
 	}
 	{
 		std::cout << green << "\n--- Test 1: Animal constructors ---" << reset << std::endl;

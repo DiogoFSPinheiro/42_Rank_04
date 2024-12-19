@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.hpp                                         :+:      :+:    :+:   */
+/*   Cat.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
+#ifndef CAT_HPP
+#define CAT_HPP
 
 
 #define blue "\033[34m"
@@ -23,19 +23,22 @@
 #define reset "\033[0m"
 
 #include "Animal.hpp"
+#include "Brain.hpp"
 #include <string>
 #include <iostream>
 
-class Dog : public Animal
+class Cat : public Animal
 {
-
+	private:
+		Brain *_brain;
     public:
-		Dog();
-		Dog(const Dog& other);
-		Dog &operator=(const Dog& other);
-		virtual  ~Dog();
+		Cat();
+		Cat(const Cat& other);
+		Cat &operator=(const Cat& other);
+		virtual ~Cat();
 		
 		virtual void makeSound() const;
+		void showIdeas(int nbr) const;
 };
 
 

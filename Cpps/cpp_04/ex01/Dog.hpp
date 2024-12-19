@@ -23,24 +23,23 @@
 #define reset "\033[0m"
 
 #include "Animal.hpp"
+#include "Brain.hpp"
 #include <string>
 #include <iostream>
 
 class Dog : public Animal
 {
 
-    public:
+    private:
+		Brain *_brain;
+	public:
 		Dog();
 		Dog(const Dog& other);
 		Dog &operator=(const Dog& other);
 		virtual  ~Dog();
 		
 		virtual void makeSound() const;
+		void 		 showIdeas(unsigned int nbr) const;
 };
-
-
-
-
-
 
 #endif

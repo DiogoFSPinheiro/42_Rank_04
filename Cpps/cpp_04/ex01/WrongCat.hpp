@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.hpp                                         :+:      :+:    :+:   */
+/*   WrongCat.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
 
 
 #define blue "\033[34m"
@@ -22,20 +22,20 @@
 #define cyan "\033[36m"
 #define reset "\033[0m"
 
-#include "Animal.hpp"
+#include "WrongAnimal.hpp"
 #include <string>
 #include <iostream>
 
-class Dog : public Animal
+class WrongCat : public WrongAnimal
 {
 
     public:
-		Dog();
-		Dog(const Dog& other);
-		Dog &operator=(const Dog& other);
-		virtual  ~Dog();
+		WrongCat();
+		WrongCat(const WrongCat& other);
+		WrongCat &operator=(const WrongCat& other);
+		~WrongCat();
 		
-		virtual void makeSound() const;
+		void makeSound() const;
 };
 
 

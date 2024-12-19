@@ -4,9 +4,9 @@ CC = c++
 
 CFLAGS = -std=c++98 -Wall -Wextra -Werror -std=c++98
 
-NAME = Animal
+NAME = Brain
 
-SRCS = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp 
+SRCS = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp Brain.cpp
 
 GREEN		= \033[38;5;47m
 YELLOW		= \033[38;5;226m
@@ -49,7 +49,7 @@ $(NAME) : $(OBJS)
 
 run:
 	make re
-	./Animal
+	./Brain
 
 clean:
 	rm -rf $(OBJS) 

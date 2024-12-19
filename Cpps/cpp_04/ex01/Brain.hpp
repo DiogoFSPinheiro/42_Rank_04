@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.hpp                                         :+:      :+:    :+:   */
+/*   Brain.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 15:23:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/18 18:42:21 by diogosan         ###   ########.fr       */
+/*   Created: 2024/12/19 10:40:02 by diogosan          #+#    #+#             */
+/*   Updated: 2024/12/19 14:14:01 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
+#ifndef BRAIN_HPP
+#define BRAIN_HPP
 
-
-#define blue "\033[34m"
-#define red "\033[31m"
-#define green "\033[32m"
-#define yellow "\033[33m"
-#define magenta "\033[35m"
-#define cyan "\033[36m"
-#define reset "\033[0m"
-
-#include "Animal.hpp"
 #include <string>
 #include <iostream>
 
-class Dog : public Animal
+class Brain 
 {
+	protected:
+		std::string _ideas[100];
+	public:
+		Brain();
+		Brain(const Brain& other);
+		Brain &operator=(const Brain& other);
+		virtual  ~Brain();
 
-    public:
-		Dog();
-		Dog(const Dog& other);
-		Dog &operator=(const Dog& other);
-		virtual  ~Dog();
-		
-		virtual void makeSound() const;
+		void		setIdeas(unsigned int index, std::string idea);
+		std::string	getIdeas(unsigned int index) const;
+		void		fillIdeas();
+
 };
 
 

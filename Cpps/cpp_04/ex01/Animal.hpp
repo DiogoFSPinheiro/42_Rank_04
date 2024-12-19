@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.hpp                                         :+:      :+:    :+:   */
+/*   Animal.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:23:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/18 18:42:21 by diogosan         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:43:01 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
-
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
 
 #define blue "\033[34m"
 #define red "\033[31m"
@@ -22,20 +21,22 @@
 #define cyan "\033[36m"
 #define reset "\033[0m"
 
-#include "Animal.hpp"
 #include <string>
 #include <iostream>
 
-class Dog : public Animal
-{
+class Animal{
+
+	protected:
+		std::string _type;
 
     public:
-		Dog();
-		Dog(const Dog& other);
-		Dog &operator=(const Dog& other);
-		virtual  ~Dog();
+		Animal();
+		Animal(const Animal& other);
+		Animal &operator=(const Animal& other);
+		virtual ~Animal();
 		
 		virtual void makeSound() const;
+		virtual std::string getType() const;
 };
 
 

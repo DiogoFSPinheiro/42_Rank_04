@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                          :+:      :+:    :+:   */
+/*   Dog.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,40 +10,51 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "Dog.hpp"
+#include "Brain.hpp"
 #include <cstdio>
 
-Animal::Animal()
+Dog::Dog()
 {
-	_type = "Animal";
-	std::cout << "ANIMAL: Default constructor called!" << std::endl;
+	_type = "Dog";
+	this->_brain = new Brain();
+	std::cout << "DOG: Default constructor called!" << std::endl;
 }
 
-Animal::Animal(const Animal& other)
+Dog::Dog(const Dog& other)
 {
-	std::cout << "ANIMAL: Copy constructor called!" << std::endl;
+	std::cout << "DOG: Copy constructor called!" << std::endl;
+	this->_brain = new Brain(*other._brain);
 	*this = other;
 }
-Animal::~Animal()
+Dog::~Dog()
 {
-	std::cout << "ANIMAL: Destructor for " << this->_type << " was called!" << std::endl;
+	std::cout << "DOG: Destructor for " << this->_type << " was called!" << std::endl;
+	delete this->_brain;
 }
 
-Animal &Animal::operator=(const Animal& other)
+Dog &Dog::operator=(const Dog& other)
 {
-	std::cout << "ANIMAL: Assigment constructor for was called!" << std::endl;
+	std::cout << "DOG: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
+	{
 		_type = other._type;
+		if (_brain)
+			delete _brain;
+		_brain = new Brain(*other._brain);
+	}
 	return *this;
 }
 
-void Animal::makeSound() const
+void Dog::makeSound() const
 {
-	std::cout << "Some generic animal sound!" << std::endl;;
+	std::cout <<"wooof wooof wooof wooof wooof wooof wooof" <<std::endl;
 }
 
-std::string Animal::getType() const
+void Dog::showIdeas(unsigned int nbr) const
 {
-	return _type;
+	unsigned int i = 0;
+	while (i < nbr-1)
+		std::cout << this->_brain->getIdeas(i++) <<std::endl;
 }
 

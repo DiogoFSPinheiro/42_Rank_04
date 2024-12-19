@@ -33,7 +33,7 @@ class Cat : public Animal
 		Cat();
 		Cat(const Cat& other);
 		Cat &operator=(const Cat& other);
-		~Cat();
+		virtual ~Cat();
 		
 		virtual void makeSound() const;
 };

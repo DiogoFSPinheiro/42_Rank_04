@@ -33,9 +33,7 @@ Dog &Dog::operator=(const Dog& other)
 {
 	std::cout << "DOG: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
-	{
 		_type = other._type;
-	}
 	return *this;
 }
 
