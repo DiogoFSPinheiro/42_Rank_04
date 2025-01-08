@@ -23,7 +23,6 @@ Cat::Cat()
 Cat::Cat(const Cat& other)
 {
 	std::cout << "CAT: Copy constructor called!" << std::endl;
-	this->_brain = new Brain(*other._brain);
 	*this = other;
 }
 Cat::~Cat()

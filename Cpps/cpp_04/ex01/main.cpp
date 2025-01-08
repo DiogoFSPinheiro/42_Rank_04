@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:18:39 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/19 14:55:14 by diogosan         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:21:55 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@
 
 int main()
 {
+	{
+		Dog basic;
+		std::cout << basic.showBrainLocal() << std::endl;
+		{
+			Dog temp = basic;
+			std::cout << temp.showBrainLocal() << std::endl;
+		}
+	}
+	
 	{
 		std::cout << green << "\n--- Subject Main ---" << reset << std::endl;
 		

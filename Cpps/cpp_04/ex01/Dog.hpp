@@ -40,6 +40,7 @@ class Dog : public Animal
 		
 		virtual void makeSound() const;
 		void 		 showIdeas(unsigned int nbr) const;
+		Brain*		showBrainLocal() const; 
 };
 
 #endif

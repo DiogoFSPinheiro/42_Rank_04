@@ -24,7 +24,6 @@ Dog::Dog()
 Dog::Dog(const Dog& other)
 {
 	std::cout << "DOG: Copy constructor called!" << std::endl;
-	this->_brain = new Brain(*other._brain);
 	*this = other;
 }
 Dog::~Dog()
@@ -58,3 +57,8 @@ void Dog::showIdeas(unsigned int nbr) const
 		std::cout << this->_brain->getIdeas(i++) <<std::endl;
 }
 
+
+Brain*		Dog::showBrainLocal() const
+{
+	return this->_brain;
+} 
