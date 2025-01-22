@@ -20,7 +20,7 @@ Cat::Cat()
 	std::cout << "CAT: Default constructor called!" << std::endl;
 }
 
-Cat::Cat(const Cat& other)
+Cat::Cat(const Cat& other) : _brain(NULL)
 {
 	std::cout << "CAT: Copy constructor called!" << std::endl;
 	*this = other;

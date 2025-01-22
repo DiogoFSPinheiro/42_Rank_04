@@ -21,9 +21,10 @@ Dog::Dog()
 	std::cout << "DOG: Default constructor called!" << std::endl;
 }
 
-Dog::Dog(const Dog& other)
+Dog::Dog(const Dog& other) : _brain(NULL)
 {
 	std::cout << "DOG: Copy constructor called!" << std::endl;
+	
 	*this = other;
 }
 Dog::~Dog()

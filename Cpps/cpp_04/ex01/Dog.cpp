@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "Dog.hpp"
+#include "Animal.hpp"
 #include "Brain.hpp"
+#include <cstddef>
 #include <cstdio>
 
 Dog::Dog()
@@ -21,7 +23,7 @@ Dog::Dog()
 	std::cout << "DOG: Default constructor called!" << std::endl;
 }
 
-Dog::Dog(const Dog& other)
+Dog::Dog(const Dog& other) : Animal(other) , _brain(NULL)
 {
 	std::cout << "DOG: Copy constructor called!" << std::endl;
 	*this = other;
@@ -34,7 +36,6 @@ Dog::~Dog()
 
 Dog &Dog::operator=(const Dog& other)
 {
-	std::cout << "DOG: Assigment constructor for was called!" << std::endl;
 	if (this != &other)
 	{
 		_type = other._type;
@@ -42,6 +43,7 @@ Dog &Dog::operator=(const Dog& other)
 			delete _brain;
 		_brain = new Brain(*other._brain);
 	}
+	std::cout << "DOG: Assigment constructor for was called!" << std::endl;
 	return *this;
 }
 
