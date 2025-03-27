@@ -6,7 +6,7 @@
 /*   By: diogosan <diogosan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:36:38 by diogosan          #+#    #+#             */
-/*   Updated: 2024/12/13 11:02:37 by diogosan         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:59:35 by diogosan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,16 +119,24 @@ Fixed Fixed::operator-(const Fixed& other) const {
     return Fixed(this->toFloat() - other.toFloat());
 }
 
-Fixed Fixed::operator*(const Fixed& other) const {
-    return Fixed(this->toFloat() * other.toFloat());
+Fixed Fixed::operator*(const Fixed& other) const{
+	Fixed returned;
+	
+	returned._fixed_point = (this->_fixed_point * other._fixed_point) >> this->_fracBits;
+	
+    return returned;
 }
 
 Fixed Fixed::operator/(const Fixed& other) const {
+	Fixed returned;
+	
     if (other._fixed_point == 0) {
         throw std::runtime_error("Division by zero");
     }
-    return Fixed(this->toFloat() / other.toFloat());
+	returned._fixed_point = (this->_fixed_point << this->_fracBits) / other._fixed_point;
+    return returned;
 }
+
 
 //-------------------------------------------------
 
